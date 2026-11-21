@@ -8,6 +8,7 @@ import { Menu } from '../pages/Menu.jsx'
 import { Pos } from '../pages/Pos.jsx'
 import { Inventory } from '../pages/Inventory.jsx'
 import { Queue } from '../pages/Queue.jsx'
+import { Staff } from '../pages/Staff.jsx'
 
 // built pages, one line each: key → element; pages not listed show ComingSoon
 const PAGE_ELEMENTS = {
@@ -15,6 +16,7 @@ const PAGE_ELEMENTS = {
   queue: <Queue />,
   inventory: <Inventory />,
   menu: <Menu />,
+  staff: <Staff />,
 }
 
 export function AppRoutes() {
