@@ -55,4 +55,8 @@ describe('parseRestock', () => {
     expect(parseRestock('250')).toEqual({ qty: 250 })
     expect(parseRestock(' 40 ')).toEqual({ qty: 40 })
   })
+  it('rejects more than 1,000,000', () => {
+    expect(parseRestock('1000000')).toEqual({ qty: 1000000 })
+    expect(parseRestock('1000001')).toEqual({ error: 'Enter at most 1,000,000' })
+  })
 })

@@ -30,5 +30,6 @@ export function parseRestock(text) {
   const t = text.trim()
   if (!t) return { error: 'Enter an amount.' }
   if (!/^\d+$/.test(t) || Number(t) === 0) return { error: 'Enter a whole number above 0.' }
+  if (Number(t) > 1_000_000) return { error: 'Enter at most 1,000,000' }
   return { qty: Number(t) }
 }

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { PiClock, PiWarning } from 'react-icons/pi'
 import { useDemoStore } from '../data/DemoStore.jsx'
-import { optionsLabel } from '../data/drinks.js'
 import { columns, isLate, waitLabel } from './queueView.js'
 
 const COLUMNS = [
@@ -11,7 +10,7 @@ const COLUMNS = [
   { key: 'ready', label: 'Ready', action: 'Picked up', empty: 'No drinks waiting for pickup.' },
 ]
 
-function OrderCard({ order, action, menu, now, onAdvance }) {
+function OrderCard({ order, action, now, onAdvance }) {
   const late = isLate(order.createdAt, now)
   return (
     <article className={`rounded-2xl border p-4 ${late ? 'border-warn-ink/30 bg-warn-bg text-warn-ink' : 'border-line bg-surface'}`}>
@@ -25,8 +24,7 @@ function OrderCard({ order, action, menu, now, onAdvance }) {
       <h3 className="mt-1 font-heading text-2xl font-semibold break-words">{order.customerName}</h3>
       <ul className="mt-3 space-y-2">
         {order.lines.map((l, i) => {
-          const item = menu.find((m) => m.id === l.itemId)
-          const opts = item ? optionsLabel(item, l.options) : ''
+          const opts = l.label
           return (
             <li key={i}>
               <span className="font-medium">{l.qty}× {l.name}</span>
@@ -96,7 +94,7 @@ export function Queue() {
             <div className="mt-3 space-y-3">
               {cols[c.key].length === 0 && <p className="rounded-2xl border border-dashed border-line px-4 py-8 text-center text-sm text-muted">{c.empty}</p>}
               {cols[c.key].map((o) => (
-                <OrderCard key={o.id} order={o} action={c.action} menu={state.menu} now={now} onAdvance={advance} />
+                <OrderCard key={o.id} order={o} action={c.action} now={now} onAdvance={advance} />
               ))}
             </div>
           </section>

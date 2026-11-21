@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import toast from 'react-hot-toast'
 import { DemoStoreProvider } from '../data/DemoStore.jsx'
 import { buildSeed } from '../data/seed.js'
+import { buildOrder } from '../data/store.js'
 import { Queue } from './Queue.jsx'
 
 vi.mock('react-hot-toast', () => ({ default: { success: vi.fn(), error: vi.fn() } }))
@@ -71,6 +72,15 @@ describe('Queue', () => {
     const orders = state.orders.map((o) => (o.status === 'new' ? { ...o, createdAt: new Date(Date.now() - 12 * 60000).toISOString() } : o))
     render(<DemoStoreProvider initialState={{ ...state, orders }}><Queue /></DemoStoreProvider>)
     expect(within(cards('New')[0]).getByText('Late · 12 min')).toBeTruthy()
+  })
+
+  it('a paid ticket keeps its options after the menu is edited', () => {
+    const state = buildSeed(42, new Date())
+    const order = buildOrder(state, { customerName: 'Zed', lines: [{ itemId: 'item-latte', options: { size: 'L', milk: 'oat', extraShot: true, sugar: 100 }, qty: 1 }], payment: 'cash' }, new Date())
+    const menu = state.menu.map((m) => (m.id === 'item-latte' ? { ...m, allowsShot: false } : m))
+    render(<DemoStoreProvider initialState={{ ...state, menu, orders: [...state.orders, order] }}><Queue /></DemoStoreProvider>)
+    const card = cards('New').find((c) => within(c).getByRole('heading').textContent === 'Zed')
+    expect(within(card).getByText('L · Oat · +shot')).toBeTruthy()
   })
 
   it('each column is a tabpanel labelled by its tab', () => {

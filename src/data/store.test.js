@@ -64,14 +64,23 @@ describe('buildOrder', () => {
       id: 'O-1001',
       customerName: 'Ana',
       lines: [
-        { itemId: 'item-latte', name: 'Latte', options: DEFAULT_OPTIONS, qty: 2, unitPrice: 150 },
-        { itemId: 'item-iced-latte', name: 'Iced latte', options: bigIced.options, qty: 1, unitPrice: 260 },
+        { itemId: 'item-latte', name: 'Latte', options: DEFAULT_OPTIONS, label: '', qty: 2, unitPrice: 150, unitCost: 49.2 },
+        { itemId: 'item-iced-latte', name: 'Iced latte', options: bigIced.options, label: 'L · Oat · +shot', qty: 1, unitPrice: 260, unitCost: 116.9 },
       ],
       total: 560,
       payment: 'gcash',
       createdAt: '2026-11-21T09:30:00.000Z',
       status: 'new',
     })
+  })
+})
+
+describe('buildOrder frozen cost', () => {
+  it('unitCost of a default latte is 18 g beans + 200 ml milk + 1 cup at the config costs', () => {
+    const { ingredients } = fixture()
+    const cost = (id) => ingredients.find((i) => i.id === id).costPerUnit
+    const order = buildOrder(fixture(), { customerName: 'Ana', lines: [latte], payment: 'cash' }, now)
+    expect(order.lines[0].unitCost).toBe(Math.round((18 * cost('ing-beans') + 200 * cost('ing-whole-milk') + cost('ing-cup')) * 100) / 100)
   })
 })
 
@@ -171,6 +180,29 @@ describe('validateItem', () => {
 
   it('does not take the same ingredient twice', () => {
     expect(validateItem(fixture(), recipeWith({ ingredientId: 'ing-cup', qty: 1 }, { ingredientId: 'ing-cup', qty: 2 }))).toBe('Cups is listed twice')
+  })
+})
+
+describe('validateItem milk and limits', () => {
+  const beans = { ingredientId: 'ing-beans', qty: 18 }
+  const milk = (ingredientId) => ({ ingredientId, qty: 150, milk: true })
+  it('allows only one milk line', () => {
+    expect(validateItem(fixture(), recipeWith(beans, milk('ing-whole-milk'), milk('ing-oat-milk')))).toBe('Only one ingredient can be the milk')
+  })
+  it('allows only a milk ingredient to be the milk', () => {
+    expect(validateItem(fixture(), recipeWith(milk('ing-beans')))).toBe('Only milk can be the milk')
+  })
+  it('caps the price and amounts at 1,000,000', () => {
+    expect(validateItem(fixture(), draft({ price: 1_000_000 }))).toBe(null)
+    expect(validateItem(fixture(), draft({ price: 1_000_001 }))).toBe('Price must be at most ₱1,000,000')
+    expect(validateItem(fixture(), recipeWith({ ingredientId: 'ing-cup', qty: 1_000_001 }))).toBe('Amounts must be at most 1,000,000')
+  })
+})
+
+describe('validateOrder hidden items', () => {
+  it('refuses a hidden item', () => {
+    const s = { ...fixture(), menu: shopConfig.menu.map((m) => (m.id === 'item-latte' ? { ...m, hidden: true } : m)) }
+    expect(validateOrder(s, { customerName: 'Ana', lines: [latte] })).toBe('Latte is no longer on the menu')
   })
 })
 

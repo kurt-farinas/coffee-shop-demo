@@ -1,4 +1,4 @@
-import { CATEGORIES, linePrice, lineUsage } from './drinks.js'
+import { CATEGORIES, MILKS, linePrice, lineUsage, optionsLabel } from './drinks.js'
 
 const FLOW = { new: 'brewing', brewing: 'ready', ready: 'done', done: 'done' }
 
@@ -54,6 +54,7 @@ export function validateOrder(state, { customerName, lines }) {
   if (!customerName?.trim()) return "Add the customer's name"
   for (const l of lines) {
     if (!findItem(state, l.itemId)) return 'Item not found'
+    if (findItem(state, l.itemId).hidden) return `${findItem(state, l.itemId).name} is no longer on the menu`
     if (!Number.isInteger(l.qty) || l.qty < 1) return 'Quantity must be at least 1'
   }
   for (const [id, qty] of Object.entries(orderUsage(state, lines))) {
@@ -66,7 +67,9 @@ export function validateOrder(state, { customerName, lines }) {
 export function buildOrder(state, { customerName, lines, payment }, now) {
   const full = lines.map(({ itemId, options, qty }) => {
     const item = findItem(state, itemId)
-    return { itemId, name: item.name, options, qty, unitPrice: linePrice(item, options) }
+    // label and unitCost are frozen here so a later menu edit can't change a paid ticket
+    const unitCost = Object.entries(lineUsage(item, options)).reduce((sum, [id, qty]) => sum + qty * state.ingredients.find((i) => i.id === id).costPerUnit, 0)
+    return { itemId, name: item.name, options, label: optionsLabel(item, options), qty, unitPrice: linePrice(item, options), unitCost: Math.round(unitCost * 100) / 100 }
   })
   return {
     id: `O-${1001 + state.orders.length}`,
@@ -79,7 +82,9 @@ export function buildOrder(state, { customerName, lines, payment }, now) {
   }
 }
 
+const MAX = 1_000_000
 const isCount = (n) => Number.isInteger(n) && n >= 1
+const MILK_IDS = Object.values(MILKS).map((m) => m.ingredientId)
 
 // item may be new (no id yet) or an edit of an existing one (its own name doesn't count as taken)
 export function validateItem(state, { id, name, category, price, recipe }) {
@@ -89,13 +94,18 @@ export function validateItem(state, { id, name, category, price, recipe }) {
   const twin = state.menu.find((m) => m.id !== id && m.name.trim().toLowerCase() === trimmed.toLowerCase())
   if (twin) return `There is already a ${twin.name}`
   if (!isCount(price)) return 'Price must be at least ₱1'
+  if (price > MAX) return 'Price must be at most ₱1,000,000'
   if (!CATEGORIES.includes(category)) return 'Pick a category'
   if (!recipe?.length) return 'Add at least one ingredient'
   const seen = new Set()
+  let milkLines = 0
   for (const line of recipe) {
     const ing = state.ingredients.find((i) => i.id === line.ingredientId)
     if (!ing) return 'Ingredient not found'
     if (!isCount(line.qty)) return 'Amounts must be at least 1'
+    if (line.qty > MAX) return 'Amounts must be at most 1,000,000'
+    if (line.milk && !MILK_IDS.includes(ing.id)) return 'Only milk can be the milk'
+    if (line.milk && ++milkLines > 1) return 'Only one ingredient can be the milk'
     if (seen.has(ing.id)) return `${ing.name} is listed twice`
     seen.add(ing.id)
   }

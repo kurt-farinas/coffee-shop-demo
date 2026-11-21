@@ -33,7 +33,7 @@ function randomOrder(rand, menu, date, status) {
     },
     qty: pick(rand, [1, 1, 1, 2]),
   }))
-  const order = buildOrder({ menu, orders: [] }, { customerName: pick(rand, NAMES), lines, payment: pick(rand, ['cash', 'cash', 'gcash']) }, date)
+  const order = buildOrder({ menu, ingredients: shopConfig.ingredients, orders: [] }, { customerName: pick(rand, NAMES), lines, payment: pick(rand, ['cash', 'cash', 'gcash']) }, date)
   return { ...order, status }
 }
 

@@ -68,8 +68,8 @@ export function Inventory() {
         )}
       </div>
 
-      <table className="mt-4 block w-full md:table md:overflow-hidden md:rounded-2xl md:border md:border-line md:bg-surface">
-        <thead className="hidden border-b border-line bg-soft md:table-header-group">
+      <table className="mt-4 block w-full lg:table lg:overflow-hidden lg:rounded-2xl lg:border lg:border-line lg:bg-surface">
+        <thead className="hidden border-b border-line bg-soft lg:table-header-group">
           <tr>
             <th scope="col" className={th}>Ingredient</th>
             <th scope="col" className={th}>Stock</th>
@@ -79,7 +79,7 @@ export function Inventory() {
             <th scope="col" className="px-4 py-3"><span className="sr-only">Actions</span></th>
           </tr>
         </thead>
-        <tbody className="grid gap-3 md:table-row-group">
+        <tbody className="grid gap-3 lg:table-row-group">
           {rows.map((ing) => {
             const badge = BADGE[stockState(ing)]
             return (

@@ -74,6 +74,7 @@ export function Menu() {
   const { state, saveItem, toggleHidden } = useDemoStore()
   const [form, setForm] = useState(null) // the item being added or edited while the dialog is open
   const [error, setError] = useState(null)
+  const [submits, setSubmits] = useState(0) // keys the alert so a repeated error is announced again
   const sheet = useRef(null)
   const { ingredients } = state
 
@@ -92,6 +93,7 @@ export function Menu() {
 
   const save = (e) => {
     e.preventDefault()
+    setSubmits((n) => n + 1)
     const result = saveItem(fromForm(form))
     if (!result.ok) return setError(result.error)
     toast.success(`Saved ${result.item.name}`)
@@ -133,7 +135,7 @@ export function Menu() {
         className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-2xl bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-2xl"
       >
         {form && (
-          <form noValidate onSubmit={save} className="flex flex-col gap-4 p-5">
+          <form noValidate onSubmit={save} aria-describedby={error ? 'menu-form-error' : undefined} className="flex flex-col gap-4 p-5">
             <div className="flex items-start justify-between gap-3">
               <h2 className="font-heading text-2xl font-semibold">{form.id ? 'Edit item' : 'Add item'}</h2>
               <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-soft">
@@ -171,13 +173,13 @@ export function Menu() {
                 return (
                   <div key={n} className="grid grid-cols-[minmax(0,1fr)_6rem_auto] items-end gap-x-2 gap-y-1 rounded-xl border border-line p-3">
                     <label className="flex min-w-0 flex-col gap-1 text-xs font-semibold">
-                      Ingredient
+                      Ingredient {n + 1}
                       <select value={l.ingredientId} onChange={(e) => setLine(n, { ingredientId: e.target.value })} className={`${field} w-full`}>
                         {ingredients.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
                       </select>
                     </label>
                     <label className="flex min-w-0 flex-col gap-1 text-xs font-semibold">
-                      Amount ({ing.unit})
+                      Amount {n + 1} ({ing.unit})
                       <input type="number" inputMode="numeric" min="1" step="1" value={l.qty} onChange={(e) => setLine(n, { qty: e.target.value })} className={`${field} w-full`} />
                     </label>
                     <button type="button" onClick={() => set('recipe', form.recipe.filter((_, i) => i !== n))} className="inline-flex size-11 items-center justify-center rounded-full text-danger hover:bg-soft">
@@ -206,7 +208,7 @@ export function Menu() {
             </fieldset>
 
             {error && (
-              <p role="alert" className="rounded-xl bg-warn-bg px-3 py-2 text-sm font-semibold text-warn-ink">
+              <p key={submits} id="menu-form-error" role="alert" className="rounded-xl bg-warn-bg px-3 py-2 text-sm font-semibold text-warn-ink">
                 {error}
               </p>
             )}

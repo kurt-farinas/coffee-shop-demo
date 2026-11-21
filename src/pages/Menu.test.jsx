@@ -80,6 +80,17 @@ describe('Menu', () => {
     expect(toast.success).not.toHaveBeenCalled()
   })
 
+  it('numbers the recipe row labels and links the error to the form', () => {
+    mount()
+    tap(menu(), 'Add item')
+    tap(dialog(), 'Add ingredient')
+    const labels = [...dialog().querySelectorAll('label')].map((l) => l.textContent)
+    expect(labels.some((t) => t.startsWith('Ingredient 2'))).toBe(true)
+    expect(labels.some((t) => t.startsWith('Amount 2 (g)'))).toBe(true)
+    tap(dialog(), 'Save')
+    expect(dialog().querySelector('form').getAttribute('aria-describedby')).toBe(dialog().querySelector('[role="alert"]').id)
+  })
+
   it('adds a new item from the form', () => {
     mount()
     tap(menu(), 'Add item')
