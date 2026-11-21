@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, linePrice } from '../data/drinks.js'
+import { DEFAULT_OPTIONS, MILKS, choicesFor, linePrice } from '../data/drinks.js'
 import { orderUsage } from '../data/store.js'
 
 // cart lines are { key, itemId, options, qty }; the key makes the same item with the same options one line
@@ -16,8 +16,14 @@ export const setQty = (cart, key, qty) =>
 export const cartTotal = (state, cart) =>
   cart.reduce((sum, l) => sum + l.qty * linePrice(state.menu.find((m) => m.id === l.itemId), l.options), 0)
 
-// enough stock for one with the default options
-export const canMake = (state, item) =>
-  Object.entries(orderUsage(state, [{ itemId: item.id, options: DEFAULT_OPTIONS, qty: 1 }])).every(
+// one more of this item with these options, on top of what is already in the cart, fits the stock on hand
+export const canAdd = (state, cart, itemId, options) =>
+  Object.entries(orderUsage(state, [...cart, { itemId, options, qty: 1 }])).every(
     ([id, qty]) => qty <= state.ingredients.find((i) => i.id === id).stock,
+  )
+
+// at least one allowed option set (smallest size, any milk the item takes) can be made once
+export const canMake = (state, item) =>
+  (choicesFor(item).milk ? Object.keys(MILKS) : [DEFAULT_OPTIONS.milk]).some((milk) =>
+    canAdd(state, [], item.id, { ...DEFAULT_OPTIONS, size: 'S', milk }),
   )

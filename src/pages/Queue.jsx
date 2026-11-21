@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { PiClock, PiWarning } from 'react-icons/pi'
 import { useDemoStore } from '../data/DemoStore.jsx'
@@ -19,7 +19,7 @@ function OrderCard({ order, action, menu, now, onAdvance }) {
         <span className="font-semibold">{order.id}</span>
         <span className="inline-flex items-center gap-1 font-medium">
           {late ? <PiWarning aria-hidden="true" className="size-4" /> : <PiClock aria-hidden="true" className="size-4" />}
-          {late ? `Waiting ${waitLabel(order.createdAt, now)}` : waitLabel(order.createdAt, now)}
+          {late ? `Late · ${waitLabel(order.createdAt, now)}` : waitLabel(order.createdAt, now)}
         </span>
       </div>
       <h3 className="mt-1 font-heading text-2xl font-semibold break-words">{order.customerName}</h3>
@@ -57,7 +57,10 @@ export function Queue() {
   }, [])
 
   const cols = columns(state.orders)
+  const lockedUntil = useRef({}) // per column: a second tap within 400 ms is ignored
   const advance = (order) => {
+    if (Date.now() < (lockedUntil.current[order.status] ?? 0)) return
+    lockedUntil.current[order.status] = Date.now() + 400
     if (order.status === 'brewing') toast.success(`${order.id} ready for ${order.customerName}`)
     advanceOrder(order.id)
   }
@@ -85,7 +88,7 @@ export function Queue() {
 
       <div className="mt-4 grid gap-6 md:mt-6 md:grid-cols-3">
         {COLUMNS.map((c) => (
-          <section key={c.key} id={`col-${c.key}`} aria-labelledby={`head-${c.key}`} className={tab === c.key ? '' : 'hidden md:block'}>
+          <section key={c.key} id={`col-${c.key}`} role="tabpanel" aria-labelledby={`tab-${c.key}`} className={tab === c.key ? '' : 'hidden md:block'}>
             <h2 id={`head-${c.key}`} className="flex items-center gap-2 text-sm font-semibold tracking-[0.15em] text-muted uppercase">
               {c.label}
               <span className="rounded-full bg-soft px-2 py-0.5 text-xs tracking-normal text-ink">{cols[c.key].length}</span>

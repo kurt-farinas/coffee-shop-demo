@@ -4,15 +4,21 @@ export const SHOT = { add: 40, grams: 18 }
 export const SUGAR_LEVELS = [0, 25, 50, 100]
 export const DEFAULT_OPTIONS = { size: 'M', milk: 'whole', extraShot: false, sugar: 100 }
 
-// the options that actually apply to this item: pastries ignore size and sugar, no milk line ignores milk, no shot unless allowed
+// which choices this item takes: pastries have no size or sugar, no milk line means no milk, no shot unless allowed
+export function choicesFor(item) {
+  const pastry = item.category === 'Pastry'
+  return { size: !pastry, milk: item.recipe.some((line) => line.milk), shot: !!item.allowsShot, sugar: !pastry }
+}
+
+// the options that actually apply to this item: a choice the item does not take falls back to the default
 function applied(item, given) {
   const options = { ...DEFAULT_OPTIONS, ...given } // a line sent without options gets the defaults
-  const pastry = item.category === 'Pastry'
+  const c = choicesFor(item)
   return {
-    size: pastry ? DEFAULT_OPTIONS.size : options.size,
-    milk: item.recipe.some((line) => line.milk) ? options.milk : DEFAULT_OPTIONS.milk,
-    extraShot: item.allowsShot && options.extraShot,
-    sugar: pastry ? DEFAULT_OPTIONS.sugar : options.sugar,
+    size: c.size ? options.size : DEFAULT_OPTIONS.size,
+    milk: c.milk ? options.milk : DEFAULT_OPTIONS.milk,
+    extraShot: c.shot && options.extraShot,
+    sugar: c.sugar ? options.sugar : DEFAULT_OPTIONS.sugar,
   }
 }
 

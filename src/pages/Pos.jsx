@@ -1,23 +1,17 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { PiCaretUp, PiMinus, PiPlus, PiReceipt, PiTrash, PiX } from 'react-icons/pi'
 import { useDemoStore } from '../data/DemoStore.jsx'
-import { DEFAULT_OPTIONS, MILKS, SHOT, SIZES, SUGAR_LEVELS, linePrice, optionsLabel } from '../data/drinks.js'
+import { DEFAULT_OPTIONS, MILKS, SHOT, SIZES, SUGAR_LEVELS, choicesFor, linePrice, optionsLabel } from '../data/drinks.js'
 import { formatPeso } from '../lib/money.js'
-import { addLine, canMake, cartTotal, setQty } from './posCart.js'
+import { addLine, canAdd, canMake, cartTotal, setQty } from './posCart.js'
 
 const extra = (add) => (add ? `${add > 0 ? '+' : '−'}${formatPeso(Math.abs(add))}` : '')
-
-// the choices this item takes; the same rules drinks.js applies to price and stock
-const choicesFor = (item) => {
-  const pastry = item.category === 'Pastry'
-  return { size: !pastry, milk: item.recipe.some((l) => l.milk), shot: item.allowsShot, sugar: !pastry }
-}
 
 const pill = (on) =>
   `inline-flex min-h-11 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors ${
     on ? 'border-rail bg-rail text-rail-ink' : 'border-line bg-surface text-ink hover:bg-soft'
-  }`
+  } disabled:cursor-not-allowed disabled:opacity-60`
 
 function Choice({ legend, options, value, onChange }) {
   return (
@@ -25,9 +19,10 @@ function Choice({ legend, options, value, onChange }) {
       <legend className="text-sm font-semibold">{legend}</legend>
       <div className="mt-2 flex flex-wrap gap-2">
         {options.map((o) => (
-          <button key={o.value} type="button" aria-pressed={value === o.value} onClick={() => onChange(o.value)} className={pill(value === o.value)}>
+          <button key={o.value} type="button" disabled={o.out} aria-pressed={value === o.value} onClick={() => onChange(o.value)} className={pill(value === o.value)}>
             {o.label}
             {o.extra && <span className={value === o.value ? 'text-highlight' : 'text-muted'}>{o.extra}</span>}
+            {o.out && <span className="text-xs font-semibold text-danger">Out</span>}
           </button>
         ))}
       </div>
@@ -55,8 +50,13 @@ export function Pos() {
   const tapItem = (item) => {
     if (!Object.values(choicesFor(item)).some(Boolean)) return setCart((c) => addLine(c, { itemId: item.id, options: DEFAULT_OPTIONS, qty: 1 }))
     setPicked({ item, options: DEFAULT_OPTIONS })
-    sheet.current.showModal()
   }
+  // open once the sheet content is rendered, so focus lands on the first choice (or Add)
+  useEffect(() => {
+    if (!picked || sheet.current.open) return
+    sheet.current.showModal()
+    sheet.current.querySelector('fieldset button:not(:disabled), button[data-add]')?.focus()
+  }, [picked])
   const setOption = (key, value) => setPicked((p) => ({ ...p, options: { ...p.options, [key]: value } }))
   const addPicked = () => {
     setCart((c) => addLine(c, { itemId: picked.item.id, options: picked.options, qty: 1 }))
@@ -77,9 +77,10 @@ export function Pos() {
   }
 
   const uses = picked && choicesFor(picked.item)
+  const outWith = (change) => picked && !canAdd(state, cart, picked.item.id, { ...picked.options, ...change })
 
   return (
-    <div className="grid gap-6 pb-24 md:grid-cols-[minmax(0,1fr)_20rem] md:pb-0 lg:grid-cols-[minmax(0,1fr)_24rem]">
+    <div className="grid gap-6 pb-24 lg:grid-cols-[minmax(0,1fr)_24rem] lg:pb-0">
       <section aria-labelledby="pos-title" className="min-w-0">
         <h1 id="pos-title" className="font-heading text-3xl font-semibold">Point of sale</h1>
         <div role="group" aria-label="Category" className="mt-4 flex flex-wrap gap-2">
@@ -111,13 +112,13 @@ export function Pos() {
 
       <aside
         aria-label="Current order"
-        className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] md:sticky md:top-6 md:self-start md:rounded-2xl md:border md:shadow-none"
+        className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] lg:sticky lg:top-6 lg:self-start lg:rounded-2xl lg:border lg:shadow-none"
       >
         <button
           type="button"
           aria-expanded={cartOpen}
           onClick={() => setCartOpen((o) => !o)}
-          className="flex min-h-14 w-full items-center gap-3 bg-rail px-4 text-left text-rail-ink md:hidden"
+          className="flex min-h-14 w-full items-center gap-3 bg-rail px-4 text-left text-rail-ink lg:hidden"
         >
           <PiReceipt aria-hidden="true" className="size-6 shrink-0 text-highlight" />
           <span className="flex-1 font-semibold">
@@ -126,7 +127,7 @@ export function Pos() {
           <PiCaretUp aria-hidden="true" className={`size-5 transition-transform ${cartOpen ? 'rotate-180' : ''}`} />
         </button>
 
-        <div className={`${cartOpen ? 'flex' : 'hidden'} max-h-[70dvh] flex-col gap-4 overflow-y-auto p-4 md:flex md:max-h-none md:p-5`}>
+        <div className={`${cartOpen ? 'flex' : 'hidden'} max-h-[70dvh] flex-col gap-4 overflow-y-auto p-4 lg:flex lg:max-h-none lg:p-5`}>
           <h2 className="font-heading text-xl font-semibold">Order</h2>
           {cart.length === 0 ? (
             <p className="text-sm text-muted">Tap an item to add it.</p>
@@ -204,15 +205,15 @@ export function Pos() {
               <Choice legend="Size" value={picked.options.size} onChange={(v) => setOption('size', v)} options={Object.entries(SIZES).map(([k, s]) => ({ value: k, label: k, extra: extra(s.add) }))} />
             )}
             {uses.milk && (
-              <Choice legend="Milk" value={picked.options.milk} onChange={(v) => setOption('milk', v)} options={Object.entries(MILKS).map(([k, m]) => ({ value: k, label: k[0].toUpperCase() + k.slice(1), extra: extra(m.add) }))} />
+              <Choice legend="Milk" value={picked.options.milk} onChange={(v) => setOption('milk', v)} options={Object.entries(MILKS).map(([k, m]) => ({ value: k, label: k[0].toUpperCase() + k.slice(1), extra: extra(m.add), out: outWith({ milk: k }) }))} />
             )}
             {uses.shot && (
-              <Choice legend="Extra shot" value={picked.options.extraShot} onChange={(v) => setOption('extraShot', v)} options={[{ value: false, label: 'No' }, { value: true, label: 'Yes', extra: extra(SHOT.add) }]} />
+              <Choice legend="Extra shot" value={picked.options.extraShot} onChange={(v) => setOption('extraShot', v)} options={[{ value: false, label: 'No' }, { value: true, label: 'Yes', extra: extra(SHOT.add), out: outWith({ extraShot: true }) }]} />
             )}
             {uses.sugar && (
               <Choice legend="Sugar" value={picked.options.sugar} onChange={(v) => setOption('sugar', v)} options={SUGAR_LEVELS.map((s) => ({ value: s, label: `${s}%` }))} />
             )}
-            <button type="button" onClick={addPicked} className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95">
+            <button type="button" data-add disabled={outWith({})} onClick={addPicked} className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95">
               Add to order · {formatPeso(linePrice(picked.item, picked.options))}
             </button>
           </div>

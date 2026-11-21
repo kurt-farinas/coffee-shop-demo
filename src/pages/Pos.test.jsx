@@ -95,3 +95,27 @@ describe('Pos', () => {
     expect(toast.error).toHaveBeenCalledWith("Add the customer's name")
   })
 })
+
+describe('Pos options sheet', () => {
+  const withStock = (id, stock) => {
+    const seed = buildSeed(42, new Date())
+    return { ...seed, ingredients: seed.ingredients.map((i) => (i.id === id ? { ...i, stock } : i)) }
+  }
+
+  it('disables a milk that cannot be made for one more drink and says Out', () => {
+    mount(withStock('ing-oat-milk', 150)) // a medium latte takes 200 ml
+    tap('Latte')
+    const oat = button('Oat')
+    expect(oat.disabled).toBe(true)
+    expect(oat.textContent).toContain('Out')
+    expect(button('Whole').disabled).toBe(false)
+  })
+
+  it('the Matcha sheet has no Extra shot control', () => {
+    mount()
+    tap('Matcha')
+    const legends = [...el.querySelectorAll('dialog legend')].map((l) => l.textContent)
+    expect(legends).toContain('Milk')
+    expect(legends).not.toContain('Extra shot')
+  })
+})

@@ -43,4 +43,13 @@ describe('canMake', () => {
     expect(canMake(out, item('item-matcha-latte'))).toBe(false)
     expect(canMake(out, item('item-latte'))).toBe(true)
   })
+
+  it('is true while any milk the item takes can be made, false when none can', () => {
+    const stock = (whole, oat) => ({
+      ...state,
+      ingredients: state.ingredients.map((i) => (i.id === 'ing-whole-milk' ? { ...i, stock: whole } : i.id === 'ing-oat-milk' ? { ...i, stock: oat } : i)),
+    })
+    expect(canMake(stock(0, 1000), item('item-latte'))).toBe(true)
+    expect(canMake(stock(0, 0), item('item-latte'))).toBe(false)
+  })
 })

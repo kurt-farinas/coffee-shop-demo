@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { shopConfig } from '../config/shop.config.js'
-import { DEFAULT_OPTIONS, linePrice, lineUsage, optionsLabel } from './drinks.js'
+import { DEFAULT_OPTIONS, choicesFor, linePrice, lineUsage, optionsLabel } from './drinks.js'
 
 const item = (id) => shopConfig.menu.find((m) => m.id === id)
 const latte = item('item-latte')
@@ -73,5 +73,13 @@ describe('choices an item ignores', () => {
   it('treats a line with no options as the defaults', () => {
     expect(linePrice(latte, undefined)).toBe(150)
     expect(lineUsage(latte, undefined)).toEqual({ 'ing-beans': 18, 'ing-whole-milk': 200, 'ing-cup': 1 })
+  })
+})
+
+describe('choicesFor', () => {
+  it('says which choices each item takes', () => {
+    expect(choicesFor(item('item-matcha-latte'))).toMatchObject({ shot: false, milk: true })
+    expect(choicesFor(item('item-americano'))).toMatchObject({ milk: false, shot: true })
+    expect(choicesFor(croissant)).toEqual({ size: false, milk: false, shot: false, sugar: false })
   })
 })
