@@ -4,6 +4,7 @@ import { RequireRole } from '../components/RequireRole.jsx'
 import { AppShell } from '../layout/AppShell.jsx'
 import { Login } from '../pages/Login.jsx'
 import { ComingSoon } from '../pages/ComingSoon.jsx'
+import { Menu } from '../pages/Menu.jsx'
 import { Pos } from '../pages/Pos.jsx'
 import { Queue } from '../pages/Queue.jsx'
 
@@ -11,6 +12,7 @@ import { Queue } from '../pages/Queue.jsx'
 const PAGE_ELEMENTS = {
   pos: <Pos />,
   queue: <Queue />,
+  menu: <Menu />,
 }
 
 export function AppRoutes() {
