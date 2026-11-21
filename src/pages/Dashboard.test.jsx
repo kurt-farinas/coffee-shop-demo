@@ -30,8 +30,8 @@ const show = (role) =>
 const card = (label) => screen.getByText(label).closest('div')
 
 describe('Dashboard', () => {
-  it('as cashier shows no profit, in words or figures', () => {
-    show('cashier')
+  it('as barista shows no profit, in words or figures', () => {
+    show('barista')
     expect(screen.queryByText(/profit/i)).toBeNull()
     expect(screen.queryByText(formatPeso(todays.profit))).toBeNull()
     expect(screen.getByText('Sales today')).toBeTruthy()
@@ -43,7 +43,7 @@ describe('Dashboard', () => {
   })
 
   it("shows today's sales, orders, cups and average from the orders", () => {
-    show('cashier')
+    show('barista')
     expect(within(card('Sales today')).getByText(formatPeso(todays.sales))).toBeTruthy()
     expect(within(card('Orders')).getByText(String(todays.orders))).toBeTruthy()
     expect(within(card('Cups sold')).getByText(String(todays.cups))).toBeTruthy()
@@ -51,7 +51,7 @@ describe('Dashboard', () => {
   })
 
   it('counts open orders and links to the queue and inventory', () => {
-    show('cashier')
+    show('barista')
     const open = state.orders.filter((o) => o.status !== 'done').length
     expect(within(card('Open orders')).getByText(String(open))).toBeTruthy()
     expect(screen.getByRole('link', { name: /queue/i }).getAttribute('href')).toBe('/queue')

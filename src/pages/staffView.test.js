@@ -37,18 +37,16 @@ describe('weekRoster', () => {
   it('runs Mon to Sun with first names by role', () => {
     expect(roster.map((r) => r.day)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
     const sun = roster.find((r) => r.day === 'Sun')
-    expect(sun.cashiers).toEqual(['Trina'])
-    expect(sun.baristas).toEqual(['Kat', 'Paolo'])
+    expect(sun.baristas).toEqual(['Trina', 'Kat', 'Paolo'])
   })
-  it('leaves no day without a cashier or a barista in the seed', () => {
+  it('leaves no day without a barista in the seed', () => {
     for (const r of roster) {
-      expect(r.cashiers.length, r.day).toBeGreaterThan(0)
       expect(r.baristas.length, r.day).toBeGreaterThan(0)
     }
   })
-  it('lists nobody when a role is missing that day', () => {
-    const r = weekRoster([{ name: 'Ana Cruz', role: 'cashier', schedule: ['Mon'] }])
-    expect(r[0]).toEqual({ day: 'Mon', cashiers: ['Ana'], baristas: [] })
-    expect(r[1].cashiers).toEqual([])
+  it('lists nobody when no barista is on that day', () => {
+    const r = weekRoster([{ name: 'Ana Cruz', role: 'barista', schedule: ['Mon'] }])
+    expect(r[0]).toEqual({ day: 'Mon', baristas: ['Ana'] })
+    expect(r[1].baristas).toEqual([])
   })
 })

@@ -29,5 +29,5 @@ const firstName = (name) => name.split(/\s+/)[0]
 export const weekRoster = (staff) =>
   WEEK.map((day) => {
     const on = (role) => staff.filter((p) => p.role === role && p.schedule.includes(day)).map((p) => firstName(p.name))
-    return { day, cashiers: on('cashier'), baristas: on('barista') }
+    return { day, baristas: on('barista') }
   })

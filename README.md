@@ -9,8 +9,7 @@ A clickable demo of a coffee shop system: dashboard, point of sale, barista orde
 Pick a role on the login screen. No password.
 
 - **Owner** sees everything: dashboard (with profit), point of sale, order queue, inventory (with costs and stock value), menu with recipe costs and margins, staff and sales report.
-- **Cashier** sees the dashboard, point of sale, order queue and inventory, with no costs or profit.
-- **Barista** sees the order queue and inventory only, with no costs.
+- **Barista** takes orders and makes the drinks: sees the dashboard, point of sale, order queue and inventory, with no costs or profit.
 
 ## Run it
 
@@ -25,7 +24,7 @@ npm run build    # static files in dist/
 
 1. Edit `src/config/shop.config.js`:
    - `name`, `tagline`, `logoText`
-   - `staff`: `ownerName`, `cashierName`, `baristaName`
+   - `staff`: `ownerName`, `baristaName`
    - `theme` colours: `rail`, `railInk`, `railActive`, `page`, `surface`, `line`, `soft`, `text`, `muted`, `accent`, `accentInk`, `highlight`, `warnBg`, `warnText`, `successBg`, `success`, `danger`
    - `fonts`: `heading` and `body` (any Google Fonts family)
    - `ingredients`: name, unit, stock, reorder level (`lowAt`) and cost per unit

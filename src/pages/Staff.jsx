@@ -110,15 +110,13 @@ export function Staff() {
           <thead className="border-b border-line bg-soft">
             <tr>
               <th scope="col" className={th}>Day</th>
-              <th scope="col" className={th}>Cashiers</th>
-              <th scope="col" className={th}>Baristas</th>
+              <th scope="col" className={th}>Baristas on shift</th>
             </tr>
           </thead>
           <tbody>
             {weekRoster(staff).map((r) => (
               <tr key={r.day} className="border-b border-line last:border-0">
                 <th scope="row" className={`${td} text-left font-semibold`}>{r.day}</th>
-                <td className={td}><Names names={r.cashiers} /></td>
                 <td className={td}><Names names={r.baristas} /></td>
               </tr>
             ))}

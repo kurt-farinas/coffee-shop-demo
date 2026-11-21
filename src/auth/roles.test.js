@@ -3,10 +3,11 @@ import { PAGES, canSee, homeFor } from './roles.js'
 
 describe('canSee', () => {
   it('follows the pages-to-roles table', () => {
-    expect(canSee('barista', 'pos')).toBe(false)
+    expect(canSee('barista', 'pos')).toBe(true)
     expect(canSee('barista', 'queue')).toBe(true)
-    expect(canSee('cashier', 'cost')).toBe(false)
-    expect(canSee('cashier', 'menu')).toBe(false)
+    expect(canSee('barista', 'cost')).toBe(false)
+    expect(canSee('barista', 'profit')).toBe(false)
+    expect(canSee('barista', 'menu')).toBe(false)
     expect(canSee('owner', 'profit')).toBe(true)
   })
 
@@ -19,20 +20,18 @@ describe('canSee', () => {
   it('lets each role see exactly its pages', () => {
     const visible = (role) => PAGES.filter((p) => canSee(role, p.key)).map((p) => p.key)
     expect(visible('owner')).toEqual(['dashboard', 'pos', 'queue', 'inventory', 'menu', 'staff', 'sales-report'])
-    expect(visible('cashier')).toEqual(['dashboard', 'pos', 'queue', 'inventory'])
-    expect(visible('barista')).toEqual(['queue', 'inventory'])
+    expect(visible('barista')).toEqual(['dashboard', 'pos', 'queue', 'inventory'])
   })
 })
 
 describe('homeFor', () => {
-  it('sends the barista to the queue and the others to the dashboard', () => {
-    expect(homeFor('barista')).toBe('/queue')
-    expect(homeFor('cashier')).toBe('/')
+  it('sends both roles to the dashboard', () => {
+    expect(homeFor('barista')).toBe('/')
     expect(homeFor('owner')).toBe('/')
   })
 
   it('is a page the role can see, so a redirect never loops', () => {
-    for (const role of ['owner', 'cashier', 'barista']) {
+    for (const role of ['owner', 'barista']) {
       expect(canSee(role, PAGES.find((p) => p.path === homeFor(role)).key)).toBe(true)
     }
   })

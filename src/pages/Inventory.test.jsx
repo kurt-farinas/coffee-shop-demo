@@ -33,8 +33,8 @@ async function restockOat(amount) {
 }
 
 describe('Inventory', () => {
-  it('as cashier shows no cost column or values', () => {
-    show('cashier')
+  it('as barista shows no cost column or values', () => {
+    show('barista')
     expect(screen.queryByRole('columnheader', { name: /Cost/ })).toBeNull()
     expect(screen.queryByText(/₱/)).toBeNull()
     expect(screen.queryByText(/Total stock value/)).toBeNull()
@@ -67,7 +67,7 @@ describe('Inventory', () => {
   })
 
   it('rejects 2.5 with an inline error and leaves stock alone', async () => {
-    show('cashier')
+    show('barista')
     await restockOat('2.5')
     expect(screen.getByRole('alert').textContent).toMatch(/whole number/)
     expect(within(row('Oat milk')).getByText('900 ml')).toBeTruthy()

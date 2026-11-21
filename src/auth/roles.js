@@ -15,17 +15,15 @@ export const PAGES = [
 
 export const ROLES = {
   owner: { label: 'Owner', person: shopConfig.staff.ownerName },
-  cashier: { label: 'Cashier', person: shopConfig.staff.cashierName },
   barista: { label: 'Barista', person: shopConfig.staff.baristaName },
 }
 
 // pseudo-keys cost and profit gate parts of a page; the owner sees every key
 const ACCESS = {
   owner: new Set([...PAGES.map((p) => p.key), 'cost', 'profit']),
-  cashier: new Set(['dashboard', 'pos', 'queue', 'inventory']),
-  barista: new Set(['queue', 'inventory']),
+  barista: new Set(['dashboard', 'pos', 'queue', 'inventory']),
 }
 
 export const canSee = (role, key) => ACCESS[role]?.has(key) ?? false
 
-export const homeFor = (role) => (role === 'barista' ? '/queue' : '/')
+export const homeFor = () => '/'

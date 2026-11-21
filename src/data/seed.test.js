@@ -11,8 +11,8 @@ describe('buildSeed', () => {
     expect(buildSeed(42, now)).toEqual(seed)
   })
 
-  it('has six staff: owner, two cashiers, three baristas', () => {
-    expect(seed.staff.map((s) => s.role).sort()).toEqual(['barista', 'barista', 'barista', 'cashier', 'cashier', 'owner'])
+  it('has six staff: owner and five baristas', () => {
+    expect(seed.staff.map((s) => s.role).sort()).toEqual(['barista', 'barista', 'barista', 'barista', 'barista', 'owner'])
   })
 
   it('totals every order from its lines', () => {

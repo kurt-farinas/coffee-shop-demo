@@ -5,7 +5,7 @@ export const shopConfig = {
   logoText: 'KC',
   locale: 'en-PH',
   currency: 'PHP',
-  staff: { ownerName: 'Bea Santos', cashierName: 'Migo Reyes', baristaName: 'Jun Cruz' },
+  staff: { ownerName: 'Bea Santos', baristaName: 'Migo Reyes' },
   // text colours here keep at least 4.5:1 contrast on page, surface and soft; the caramel accent takes dark text
   theme: {
     rail: '#3B2418',

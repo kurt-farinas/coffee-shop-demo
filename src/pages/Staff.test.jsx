@@ -39,7 +39,7 @@ describe('Staff', () => {
   it('filters by role with the chips', () => {
     mount()
     act(() => chip('Barista').click())
-    expect(cards()).toHaveLength(3)
+    expect(cards()).toHaveLength(5)
     expect(chip('Barista').getAttribute('aria-pressed')).toBe('true')
     act(() => chip('All').click())
     expect(cards()).toHaveLength(6)

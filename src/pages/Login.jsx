@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom'
-import { PiArrowRight, PiCashRegister, PiCoffee, PiCoffeeBean, PiCrown } from 'react-icons/pi'
+import { PiArrowRight, PiCoffee, PiCoffeeBean, PiCrown } from 'react-icons/pi'
 import { useRole } from '../auth/RoleProvider.jsx'
 import { ROLES, homeFor } from '../auth/roles.js'
 import { shopConfig } from '../config/shop.config.js'
 
 const CHOICES = [
   { role: 'owner', icon: PiCrown, line: 'Full access' },
-  { role: 'cashier', icon: PiCashRegister, line: 'POS, queue and stock, no costs or profit' },
-  { role: 'barista', icon: PiCoffee, line: 'Order queue and stock' },
+  { role: 'barista', icon: PiCoffee, line: 'Takes orders, makes drinks, checks stock. No costs or profit.' },
 ]
 
 export function Login() {
@@ -30,11 +29,11 @@ export function Login() {
         <p className="mx-auto mt-5 max-w-md text-base md:text-lg">{shopConfig.tagline}</p>
       </header>
 
-      <section aria-labelledby="pick-role" className="mx-auto -mt-20 max-w-5xl px-5 pb-12 md:-mt-24">
+      <section aria-labelledby="pick-role" className="mx-auto -mt-20 max-w-3xl px-5 pb-12 md:-mt-24">
         <h2 id="pick-role" className="text-center text-sm font-semibold tracking-[0.2em] text-rail-ink uppercase">
           Who is on shift?
         </h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
           {CHOICES.map(({ role, icon: Icon, line }) => (
             <button
               key={role}

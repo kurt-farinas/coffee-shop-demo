@@ -3,12 +3,12 @@ import { createRandom, int, pick } from './random.js'
 import { SUGAR_LEVELS } from './drinks.js'
 import { buildOrder } from './store.js'
 
-const { ownerName, cashierName, baristaName } = shopConfig.staff
+const { ownerName, baristaName } = shopConfig.staff
 const STAFF = [
   { id: 'st-1', name: ownerName, role: 'owner', phone: '0917 555 0201', hiredOn: '2021-06-01', schedule: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
-  { id: 'st-2', name: cashierName, role: 'cashier', phone: '0918 555 0202', hiredOn: '2022-02-14', schedule: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] },
-  { id: 'st-3', name: 'Trina Lopez', role: 'cashier', phone: '0919 555 0203', hiredOn: '2023-07-03', schedule: ['Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
-  { id: 'st-4', name: baristaName, role: 'barista', phone: '0920 555 0204', hiredOn: '2021-06-01', schedule: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] },
+  { id: 'st-2', name: baristaName, role: 'barista', phone: '0918 555 0202', hiredOn: '2022-02-14', schedule: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] },
+  { id: 'st-3', name: 'Trina Lopez', role: 'barista', phone: '0919 555 0203', hiredOn: '2023-07-03', schedule: ['Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
+  { id: 'st-4', name: 'Jun Cruz', role: 'barista', phone: '0920 555 0204', hiredOn: '2021-06-01', schedule: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] },
   { id: 'st-5', name: 'Kat Dizon', role: 'barista', phone: '0921 555 0205', hiredOn: '2022-10-10', schedule: ['Tue', 'Wed', 'Thu', 'Sat', 'Sun'] },
   { id: 'st-6', name: 'Paolo Ramos', role: 'barista', phone: '0922 555 0206', hiredOn: '2024-03-18', schedule: ['Mon', 'Fri', 'Sat', 'Sun'] },
 ]

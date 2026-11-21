@@ -31,16 +31,16 @@ function textAt(role, path, page) {
 }
 
 describe('RequireRole', () => {
-  it('sends a barista on the POS to the queue', () => {
-    expect(textAt('barista', '/pos', 'pos')).toBe('queue')
-  })
-
-  it('sends a cashier on the menu manager to the dashboard', () => {
-    expect(textAt('cashier', '/menu', 'menu')).toBe('dashboard')
+  it('sends a barista on the menu manager to the dashboard', () => {
+    expect(textAt('barista', '/menu', 'menu')).toBe('dashboard')
   })
 
   it('sends a visitor with no role to /login', () => {
     expect(textAt(null, '/pos', 'pos')).toBe('login')
+  })
+
+  it('shows the POS to a barista', () => {
+    expect(textAt('barista', '/pos', 'pos')).toBe('allowed')
   })
 
   it('shows the page to a role that can see it', () => {
