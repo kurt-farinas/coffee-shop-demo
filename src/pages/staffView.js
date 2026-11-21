@@ -16,7 +16,7 @@ const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`
 export function tenureLabel(hiredOn, today) {
   const [y, m, d] = hiredOn.split('-').map(Number)
   const months = (today.getFullYear() - y) * 12 + (today.getMonth() + 1 - m) - (today.getDate() < d ? 1 : 0)
-  if (months < 1) return 'New this month'
+  if (months < 1) return 'Less than a month'
   const since = new Date(y, m - 1, d).toLocaleString('en-US', { month: 'short', year: 'numeric' })
   const span = months < 12 ? plural(months, 'month') : plural(Math.floor(months / 12), 'year')
   return `With us since ${since} (${span})`

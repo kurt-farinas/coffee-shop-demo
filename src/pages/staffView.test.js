@@ -15,7 +15,8 @@ describe('tenureLabel', () => {
   it('rounds down to whole years, then months, then says new', () => {
     expect(tenureLabel('2021-06-01', TODAY)).toBe('With us since Jun 2021 (5 years)')
     expect(tenureLabel('2026-05-10', TODAY)).toContain('6 months')
-    expect(tenureLabel('2026-11-05', TODAY)).toContain('New this month')
+    expect(tenureLabel('2026-11-05', TODAY)).toBe('Less than a month')
+    expect(tenureLabel('2026-10-25', TODAY)).toBe('Less than a month')
     expect(tenureLabel('2025-11-22', TODAY)).toContain('(11 months)')
     expect(tenureLabel('2025-11-21', TODAY)).toContain('(1 year)')
     expect(tenureLabel('2026-10-21', TODAY)).toContain('(1 month)')

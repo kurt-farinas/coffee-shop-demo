@@ -1,7 +1,7 @@
 // pinned so the early-morning case below crosses a UTC date line on every machine
 process.env.TZ = 'Asia/Manila'
 import { describe, it, expect } from 'vitest'
-import { ordersOn, ordersBetween, summary, bestSellers, itemSales, salesByHour, dailySales, salesByCategory, paymentSplit } from './reports.js'
+import { ordersOn, ordersBetween, summary, bestSellers, itemSales, salesByHour, dailySales, salesByCategory, paymentSplit, salesSameTimeLastWeek, paymentShares } from './reports.js'
 
 const menu = [
   { id: 'latte', name: 'Latte', category: 'Espresso' },
@@ -124,5 +124,23 @@ describe('paymentSplit', () => {
   it('sums order totals by payment', () => {
     const os = [order(at(21, 8), [line('latte', 1, 150, 0)], 'cash'), order(at(21, 9), [line('latte', 1, 260, 0)], 'gcash'), order(at(21, 9), [line('latte', 1, 100, 0)], 'cash')]
     expect(paymentSplit(os)).toEqual({ cash: 250, gcash: 260 })
+  })
+})
+
+describe('salesSameTimeLastWeek', () => {
+  it('counts the same local day a week ago, only up to this time of day', () => {
+    const orders = [
+      order(at(14, 9, 59), [line('latte', 1, 150, 40)]), // same weekday, just before 10:00
+      order(at(14, 10, 1), [line('latte', 1, 260, 40)]), // same weekday, just after
+      order(at(20, 9, 0), [line('latte', 1, 999, 40)]), // yesterday, not last week
+    ]
+    expect(salesSameTimeLastWeek(orders, at(21, 10))).toBe(150)
+  })
+})
+
+describe('paymentShares', () => {
+  it('always adds up to 100%', () => {
+    expect(paymentShares({ cash: 665, gcash: 335 })).toEqual({ cash: 67, gcash: 33 })
+    expect(paymentShares({ cash: 0, gcash: 0 })).toEqual({ cash: 0, gcash: 0 })
   })
 })

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { shopConfig } from '../config/shop.config.js'
 import { useDemoStore } from '../data/DemoStore.jsx'
-import { dailySales, itemSales, ordersBetween, paymentSplit, salesByCategory, summary } from '../data/reports.js'
+import { dailySales, itemSales, ordersBetween, paymentShares, paymentSplit, salesByCategory, summary } from '../data/reports.js'
 import { DailySalesChart } from '../components/SalesCharts.jsx'
 import { formatPeso } from '../lib/money.js'
 import { Stat, card } from './Dashboard.jsx'
@@ -45,7 +45,7 @@ export function SalesReport() {
   const orders = ordersBetween(state.orders, now, days)
   const s = summary(orders, state.menu)
   const pay = paymentSplit(orders)
-  const share = (n) => (s.sales ? Math.round((n / s.sales) * 100) : 0)
+  const shares = paymentShares(pay)
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -94,19 +94,19 @@ export function SalesReport() {
           <section aria-labelledby="payment" className={card}>
             <h2 id="payment" className="font-heading text-xl font-semibold">Cash vs GCash</h2>
             <div aria-hidden="true" className="mt-4 flex h-3 overflow-hidden rounded-full bg-soft">
-              <div className="bg-accent" style={{ width: `${share(pay.cash)}%` }} />
-              <div className="bg-rail" style={{ width: `${share(pay.gcash)}%` }} />
+              <div className="bg-accent" style={{ width: `${shares.cash}%` }} />
+              <div className="bg-rail" style={{ width: `${shares.gcash}%` }} />
             </div>
             <dl className="mt-3 grid grid-cols-2 gap-3">
               <div>
                 <dt className="inline-flex items-center gap-1.5 text-sm text-muted"><span aria-hidden="true" className="size-2.5 rounded-sm bg-accent" />Cash</dt>
                 <dd className="mt-1 font-heading text-xl font-semibold tabular-nums">{formatPeso(pay.cash)}</dd>
-                <dd className="text-sm text-muted">{share(pay.cash)}% of sales</dd>
+                <dd className="text-sm text-muted">{shares.cash}% of sales</dd>
               </div>
               <div>
                 <dt className="inline-flex items-center gap-1.5 text-sm text-muted"><span aria-hidden="true" className="size-2.5 rounded-sm bg-rail" />GCash</dt>
                 <dd className="mt-1 font-heading text-xl font-semibold tabular-nums">{formatPeso(pay.gcash)}</dd>
-                <dd className="text-sm text-muted">{share(pay.gcash)}% of sales</dd>
+                <dd className="text-sm text-muted">{shares.gcash}% of sales</dd>
               </div>
             </dl>
           </section>

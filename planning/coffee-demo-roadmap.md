@@ -156,7 +156,7 @@ Home page per role: owner and cashier `/`, barista `/queue` (so the redirect for
 - [ ] Menu manager (owner): edit price and recipe quantities; add/hide an item. Needs store actions `updateItem`, validated (price ≥ 1, recipe ingredient exists).
 - **Acceptance:** Cashier sees no cost column; restock raises stock; a price change shows on the POS.
 
-### Phase 4 — Dashboard, sales report, staff (provisional)
+### Phase 4 — Dashboard, sales report, staff — DONE (reviewed, see git log)
 - [ ] Dashboard: today's sales, cups sold, average order, best sellers, low-stock list, hourly sales chart; profit card owner-only. Cost of a sale = `orderUsage × costPerUnit`.
 - [ ] Sales report (owner): 30-day chart, by item and by category, cash vs GCash.
 - [ ] Staff (owner): list with role and schedule.

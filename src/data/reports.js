@@ -85,3 +85,17 @@ export const paymentSplit = (orders) => ({
   cash: orders.filter((o) => o.payment === 'cash').reduce((s, o) => s + o.total, 0),
   gcash: orders.filter((o) => o.payment === 'gcash').reduce((s, o) => s + o.total, 0),
 })
+
+// same local clock time on the local date 7 days back (not now − 168 h, which DST would shift)
+export function salesSameTimeLastWeek(orders, now) {
+  const at = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds())
+  return ordersOn(orders, at).filter((o) => new Date(o.createdAt) <= at).reduce((sum, o) => sum + o.total, 0)
+}
+
+// whole-percent shares that always add up to 100
+export function paymentShares({ cash, gcash }) {
+  const total = cash + gcash
+  if (!total) return { cash: 0, gcash: 0 }
+  const c = Math.round((cash / total) * 100)
+  return { cash: c, gcash: 100 - c }
+}

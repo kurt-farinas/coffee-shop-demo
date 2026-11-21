@@ -4,14 +4,13 @@ import { ROLES, canSee } from '../auth/roles.js'
 import { useRole } from '../auth/RoleProvider.jsx'
 import { shopConfig } from '../config/shop.config.js'
 import { useDemoStore } from '../data/DemoStore.jsx'
-import { bestSellers, ordersOn, salesByHour, summary } from '../data/reports.js'
+import { bestSellers, ordersOn, salesByHour, salesSameTimeLastWeek, summary } from '../data/reports.js'
 import { HourlySalesChart } from '../components/SalesCharts.jsx'
 import { formatPeso } from '../lib/money.js'
 import { formatAmount, sortForDisplay, stockState } from './inventoryView.js'
 
 const longDate = new Intl.DateTimeFormat(shopConfig.locale, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
 const weekdayName = new Intl.DateTimeFormat(shopConfig.locale, { weekday: 'long' })
-const WEEK = 7 * 24 * 60 * 60000
 
 export function deltaText(now, before, weekday) {
   const diff = now - before
@@ -41,9 +40,7 @@ export function Dashboard() {
   const todays = ordersOn(state.orders, now)
   const s = summary(todays, state.menu)
   // last week's same day only up to this time of day, so a morning isn't compared with a whole day
-  const weekAgo = new Date(now.getTime() - WEEK)
-  const before = ordersOn(state.orders, weekAgo).filter((o) => new Date(o.createdAt) <= weekAgo)
-  const beforeSales = before.reduce((sum, o) => sum + o.total, 0)
+  const beforeSales = salesSameTimeLastWeek(state.orders, now)
   const diff = s.sales - beforeSales
   const DeltaIcon = diff > 0 ? PiArrowUp : diff < 0 ? PiArrowDown : PiEquals
   const top = bestSellers(todays, 5)
@@ -61,7 +58,7 @@ export function Dashboard() {
         <Stat label="Sales today" value={formatPeso(s.sales)}>
           <p className={`mt-1 inline-flex items-start gap-1 text-xs font-semibold ${diff > 0 ? 'text-success' : diff < 0 ? 'text-danger' : 'text-muted'}`}>
             <DeltaIcon aria-hidden="true" className="mt-px size-3.5 shrink-0" />
-            {deltaText(s.sales, beforeSales, weekdayName.format(weekAgo))}
+            {deltaText(s.sales, beforeSales, weekdayName.format(now))}
           </p>
         </Stat>
         <Stat label="Orders" value={s.orders} />
