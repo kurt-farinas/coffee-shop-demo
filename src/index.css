@@ -33,3 +33,15 @@ body {
   outline: 2px solid var(--color-rail);
   outline-offset: 2px;
 }
+
+/* on the dark rail a rail-coloured ring is invisible */
+.bg-rail :focus-visible {
+  outline-color: var(--color-highlight);
+}
+
+/* from md up the header is white, so it goes back to the rail ring */
+@media (min-width: 48rem) {
+  header.bg-rail :focus-visible {
+    outline-color: var(--color-rail);
+  }
+}

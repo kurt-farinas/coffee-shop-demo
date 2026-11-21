@@ -6,7 +6,7 @@ import { shopConfig } from '../config/shop.config.js'
 
 const CHOICES = [
   { role: 'owner', icon: PiCrown, line: 'Full access' },
-  { role: 'cashier', icon: PiCashRegister, line: 'POS and queue, no costs or profit' },
+  { role: 'cashier', icon: PiCashRegister, line: 'POS, queue and stock, no costs or profit' },
   { role: 'barista', icon: PiCoffee, line: 'Order queue and stock' },
 ]
 

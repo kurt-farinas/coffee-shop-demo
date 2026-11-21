@@ -5,7 +5,8 @@ export const SUGAR_LEVELS = [0, 25, 50, 100]
 export const DEFAULT_OPTIONS = { size: 'M', milk: 'whole', extraShot: false, sugar: 100 }
 
 // the options that actually apply to this item: pastries ignore size and sugar, no milk line ignores milk, no shot unless allowed
-function applied(item, options) {
+function applied(item, given) {
+  const options = { ...DEFAULT_OPTIONS, ...given } // a line sent without options gets the defaults
   const pastry = item.category === 'Pastry'
   return {
     size: pastry ? DEFAULT_OPTIONS.size : options.size,
