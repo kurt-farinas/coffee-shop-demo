@@ -27,6 +27,13 @@ body {
   background-color: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-body);
+  accent-color: var(--color-rail);
+  caret-color: var(--color-accent-ink);
+}
+
+::selection {
+  background-color: var(--color-highlight);
+  color: var(--color-ink);
 }
 
 :focus-visible {

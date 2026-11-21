@@ -102,8 +102,8 @@ export function Pos() {
                 onClick={() => tapItem(item)}
                 className="flex min-h-24 flex-col items-start rounded-2xl border border-line bg-surface p-4 text-left transition hover:border-accent disabled:cursor-not-allowed disabled:bg-soft disabled:hover:border-line"
               >
-                <span className="font-heading text-lg leading-tight font-semibold [overflow-wrap:anywhere]">{item.name}</span>
-                <span className="mt-auto pt-2 text-sm text-muted">{formatPeso(item.price)}</span>
+                <span className="font-heading text-lg leading-tight font-semibold break-words hyphens-auto">{item.name}</span>
+                <span className="mt-auto pt-2 text-sm font-semibold text-accent-ink tabular-nums">{formatPeso(item.price)}</span>
                 {out && <span className="mt-1 rounded-full bg-surface px-2 py-0.5 text-xs font-semibold text-danger">Out</span>}
               </button>
             )
@@ -113,7 +113,7 @@ export function Pos() {
 
       <aside
         aria-label="Current order"
-        className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] lg:sticky lg:top-6 lg:self-start lg:rounded-2xl lg:border lg:shadow-none"
+        className="fixed inset-x-0 bottom-0 z-10 md:left-60 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] lg:sticky lg:top-6 lg:self-start lg:rounded-2xl lg:border lg:shadow-none"
       >
         <button
           type="button"
