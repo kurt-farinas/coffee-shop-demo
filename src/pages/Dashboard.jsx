@@ -83,8 +83,10 @@ export function Dashboard() {
               {top.map((item, i) => (
                 <li key={item.itemId} className="flex items-baseline gap-3 py-2.5">
                   <span className="w-4 text-sm text-muted tabular-nums">{i + 1}</span>
-                  <span className="min-w-0 flex-1 font-semibold break-words">{item.name}</span>
-                  <span className="text-sm text-muted tabular-nums">{item.qty} sold</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold">{item.name}</span>
+                    <span className="block text-sm text-muted tabular-nums">{item.qty} sold</span>
+                  </span>
                   <span className="text-sm font-semibold tabular-nums">{formatPeso(item.sales)}</span>
                 </li>
               ))}
