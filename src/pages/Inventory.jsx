@@ -1,0 +1,161 @@
+import { useRef, useState } from 'react'
+import toast from 'react-hot-toast'
+import { PiCheckCircle, PiWarning, PiX } from 'react-icons/pi'
+import { canSee } from '../auth/roles.js'
+import { useRole } from '../auth/RoleProvider.jsx'
+import { useDemoStore } from '../data/DemoStore.jsx'
+import { formatPeso } from '../lib/money.js'
+import { costLabel, formatAmount, parseRestock, restockLabel, sortForDisplay, stockState, stockValue } from './inventoryView.js'
+
+const BADGE = {
+  low: { label: 'Low', className: 'bg-warn-bg text-warn-ink' },
+  out: { label: 'Out', className: 'bg-danger text-surface' },
+}
+
+// below md each row is a card; the small labels stand in for the hidden table header
+function Cell({ label, children, className = '' }) {
+  return (
+    <td className={`md:table-cell md:px-4 md:py-3 ${className}`}>
+      <span className="block text-xs text-muted md:hidden">{label}</span>
+      {children}
+    </td>
+  )
+}
+
+export function Inventory() {
+  const { state, restock } = useDemoStore()
+  const { role } = useRole()
+  const showCost = canSee(role, 'cost')
+  const sheet = useRef(null)
+  const [editing, setEditing] = useState(null)
+  const [amount, setAmount] = useState('')
+  const [error, setError] = useState('')
+
+  const rows = sortForDisplay(state.ingredients)
+  const lowCount = rows.filter((i) => stockState(i) !== 'ok').length
+  const total = rows.reduce((sum, i) => sum + stockValue(i), 0)
+  const target = state.ingredients.find((i) => i.id === editing)
+
+  const open = (id) => {
+    setEditing(id)
+    setAmount('')
+    setError('')
+    sheet.current.showModal()
+  }
+  const save = (e) => {
+    e.preventDefault()
+    const parsed = parseRestock(amount)
+    if (parsed.error) return setError(parsed.error)
+    restock(target.id, parsed.qty)
+    toast.success(`Added ${restockLabel(parsed.qty, target.unit)} ${target.name}`)
+    sheet.current.close()
+  }
+
+  const th = 'px-4 py-3 text-left text-xs font-semibold tracking-[0.15em] text-muted uppercase'
+  return (
+    <div className="mx-auto max-w-6xl">
+      <h1 className="font-heading text-3xl font-semibold">Inventory</h1>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${lowCount ? 'bg-warn-bg text-warn-ink' : 'bg-success-bg text-success'}`}>
+          {lowCount ? <PiWarning aria-hidden="true" className="size-5" /> : <PiCheckCircle aria-hidden="true" className="size-5" />}
+          {lowCount ? `${lowCount} ${lowCount === 1 ? 'item' : 'items'} low on stock` : 'All stock is healthy'}
+        </p>
+        {showCost && (
+          <p className="text-sm text-muted">
+            Total stock value <span className="ml-1 font-heading text-xl font-semibold text-ink">{formatPeso(total)}</span>
+          </p>
+        )}
+      </div>
+
+      <table className="mt-4 block w-full md:table md:overflow-hidden md:rounded-2xl md:border md:border-line md:bg-surface">
+        <thead className="hidden border-b border-line bg-soft md:table-header-group">
+          <tr>
+            <th scope="col" className={th}>Ingredient</th>
+            <th scope="col" className={th}>Stock</th>
+            <th scope="col" className={th}>Reorder at</th>
+            {showCost && <th scope="col" className={th}>Cost per unit</th>}
+            {showCost && <th scope="col" className={th}>Stock value</th>}
+            <th scope="col" className="px-4 py-3"><span className="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody className="grid gap-3 md:table-row-group">
+          {rows.map((ing) => {
+            const badge = BADGE[stockState(ing)]
+            return (
+              <tr key={ing.id} className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-2xl border border-line bg-surface p-4 md:table-row md:rounded-none md:border-0 md:border-b md:p-0 md:last:border-b-0">
+                <th scope="row" className="col-span-2 text-left font-heading text-xl font-semibold break-words md:table-cell md:px-4 md:py-3 md:font-body md:text-base">
+                  {ing.name}
+                </th>
+                <Cell label="Stock">
+                  <span className="inline-flex flex-wrap items-center gap-2">
+                    <span className="font-semibold">{formatAmount(ing.stock, ing.unit)}</span>
+                    {badge && (
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${badge.className}`}>
+                        <PiWarning aria-hidden="true" className="size-3.5" />
+                        {badge.label}
+                      </span>
+                    )}
+                  </span>
+                </Cell>
+                <Cell label="Reorder at"><span>{formatAmount(ing.lowAt, ing.unit)}</span></Cell>
+                {showCost && <Cell label="Cost per unit" className="whitespace-nowrap"><span>{costLabel(ing)}</span></Cell>}
+                {showCost && <Cell label="Stock value"><span>{formatPeso(stockValue(ing))}</span></Cell>}
+                <td className="col-span-2 md:table-cell md:px-4 md:py-3 md:text-right">
+                  <button
+                    type="button"
+                    aria-label={`Restock ${ing.name}`}
+                    onClick={() => open(ing.id)}
+                    className="min-h-11 w-full rounded-full border border-line px-4 text-sm font-semibold transition hover:bg-soft md:w-auto"
+                  >
+                    Restock
+                  </button>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+
+      <dialog
+        ref={sheet}
+        aria-label={target ? `Restock ${target.name}` : 'Restock'}
+        // close fires as a queued task; ignore it if a fast tap has already reopened the sheet
+        onClose={() => !sheet.current.open && setEditing(null)}
+        onClick={(e) => e.target === sheet.current && sheet.current.close()}
+        className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-md rounded-t-2xl bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-2xl"
+      >
+        {target && (
+          <form onSubmit={save} noValidate className="flex flex-col gap-4 p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-heading text-2xl font-semibold">Restock {target.name}</h2>
+                <p className="mt-1 text-sm text-muted">In stock: {formatAmount(target.stock, target.unit)}</p>
+              </div>
+              <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-soft">
+                <PiX aria-hidden="true" className="size-5" />
+              </button>
+            </div>
+            <label className="flex flex-col gap-1.5 text-sm font-semibold">
+              Amount ({target.unit})
+              <input
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                inputMode="numeric"
+                autoComplete="off"
+                autoFocus
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? 'restock-error' : undefined}
+                className="min-h-11 rounded-xl border border-line bg-surface px-3 text-base font-normal"
+              />
+            </label>
+            {error && <p id="restock-error" role="alert" className="-mt-2 text-sm font-semibold text-danger">{error}</p>}
+            <button type="submit" className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95">
+              Save
+            </button>
+          </form>
+        )}
+      </dialog>
+    </div>
+  )
+}
