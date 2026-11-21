@@ -2,6 +2,15 @@
 
 Live: https://coffee-shop-demo-rho.vercel.app (Vercel, team "kurt's things", project coffee-shop-demo, deploys on every push to `main`). The plain `coffee-shop-demo.vercel.app` name belongs to someone else, so Vercel added `-rho`.
 
+## 2026-11-21 13:56 — fc9d70e — Calm brown and cream palette (replaces espresso and red)
+- By: Claude, requested by Kurt
+- Card: #149
+- Code: 2d4b03a → fc9d70e
+- Migrations: none
+- Backup: none (static site, no database)
+- Data changes: none (all data is fake and lives in the browser)
+- Verified: live site serves assets/index-CuagXXEi.js with page colour #F7F1E8 and accent #7A4E2D; login hero photo loaded (1600 px); as Owner all 7 pages load with their headings and no sideways scroll; POS shows all 10 drink photos; a Latte for "Live Test 4" paid with toast "Order O-2915 sent to the bar" and appears on the queue; 0 console errors.
+
 ## 2026-11-21 13:53 — 5b46292 — Editorial redesign ("Kanto roast": new palette, photos, every page restyled)
 - By: Claude, requested by Kurt
 - Card: #149
