@@ -54,7 +54,7 @@ export function Inventory() {
   const th = 'px-4 py-3 text-left label'
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-medium">Inventory</h1>
+      <h1 className="font-heading text-3xl font-medium tracking-tight md:text-4xl">Inventory</h1>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <p className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold ${lowCount ? 'bg-warn-bg text-warn-ink' : 'bg-success-bg text-success'}`}>

@@ -7,6 +7,7 @@ import { useDemoStore } from '../data/DemoStore.jsx'
 import { bestSellers, ordersOn, salesByHour, salesSameTimeLastWeek, summary } from '../data/reports.js'
 import { HourlySalesChart } from '../components/SalesCharts.jsx'
 import { formatPeso } from '../lib/money.js'
+import { Photo } from '../components/Photo.jsx'
 import { formatAmount, sortForDisplay, stockState } from './inventoryView.js'
 
 const longDate = new Intl.DateTimeFormat(shopConfig.locale, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
@@ -20,11 +21,14 @@ export function deltaText(now, before, weekday) {
 
 const greeting = (hour) => (hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening')
 
-export function Stat({ label, value, children }) {
+// one ruled strip of figures instead of a row of cards; the lead figure is set larger
+export const statStrip = 'mt-6 grid grid-cols-2 gap-px border-y-2 border-rule bg-line'
+
+export function Stat({ label, value, lead = false, children }) {
   return (
-    <div className="card md:p-4">
+    <div className="bg-page px-4 py-4">
       <dt className="label">{label}</dt>
-      <dd className="display-num mt-2 text-2xl xl:text-3xl">{value}</dd>
+      <dd className={`display-num mt-2 ${lead ? 'text-3xl xl:text-4xl' : 'text-2xl xl:text-3xl'}`}>{value}</dd>
       {children}
     </div>
   )
@@ -49,13 +53,13 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-medium">
+      <h1 className="font-heading text-3xl font-medium tracking-tight md:text-4xl">
         {greeting(now.getHours())}, {ROLES[role].person.split(' ')[0]}
       </h1>
       <p className="mt-1 text-muted">{longDate.format(now)}</p>
 
-      <dl className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-5">
-        <Stat label="Sales today" value={formatPeso(s.sales)}>
+      <dl className={`${statStrip} ${canSee(role, 'profit') ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
+        <Stat lead label="Sales today" value={formatPeso(s.sales)}>
           <p className={`mt-1 inline-flex items-start gap-1 text-xs font-semibold ${diff > 0 ? 'text-success' : diff < 0 ? 'text-danger' : 'text-muted'}`}>
             <DeltaIcon aria-hidden="true" className="mt-px size-3.5 shrink-0" />
             {deltaText(s.sales, beforeSales, weekdayName.format(now))}
@@ -78,8 +82,11 @@ export function Dashboard() {
           {top.length ? (
             <ol className="mt-3 divide-y divide-line">
               {top.map((item, i) => (
-                <li key={item.itemId} className="flex items-baseline gap-3 py-2.5">
+                <li key={item.itemId} className="flex items-center gap-3 py-2.5">
                   <span className="w-5 font-heading text-lg text-accent-ink italic tabular-nums">{i + 1}</span>
+                  <span className="hidden shrink-0 xl:block">
+                    <Photo src={state.menu.find((m) => m.id === item.itemId)?.image} label={item.name} className="size-11 rounded-md text-lg" />
+                  </span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold">{item.name}</span>
                     <span className="block text-sm text-muted tabular-nums">{item.qty} sold</span>

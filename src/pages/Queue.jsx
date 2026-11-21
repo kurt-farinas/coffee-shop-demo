@@ -15,14 +15,14 @@ function OrderCard({ order, action, now, onAdvance }) {
   return (
     <article className={`rounded-md border p-4 ${late ? 'border-warn-ink/30 bg-warn-bg text-warn-ink' : 'border-line bg-surface'}`}>
       <div className="flex items-center justify-between gap-2 text-sm">
-        <span className="font-semibold">{order.id}</span>
+        <span className="display-num text-base">{order.id}</span>
         <span className="inline-flex items-center gap-1 font-medium">
           {late ? <PiWarning aria-hidden="true" className="size-4" /> : <PiClock aria-hidden="true" className="size-4" />}
           {late ? `Late · ${waitLabel(order.createdAt, now)}` : waitLabel(order.createdAt, now)}
         </span>
       </div>
       <h3 className="mt-1 font-heading text-2xl font-medium break-words">{order.customerName}</h3>
-      <ul className="mt-3 space-y-2 border-t border-dashed border-current/25 pt-3">
+      <ul className="mt-3 divide-y divide-dashed divide-current/25 border-t border-dashed border-current/25 [&>li]:py-2">
         {order.lines.map((l, i) => {
           const opts = l.label
           return (
@@ -65,7 +65,7 @@ export function Queue() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-medium">Order queue</h1>
+      <h1 className="font-heading text-3xl font-medium tracking-tight md:text-4xl">Order queue</h1>
 
       <div role="tablist" aria-label="Queue columns" className="mt-4 grid grid-cols-3 gap-1 rounded-md bg-soft p-1 md:hidden">
         {COLUMNS.map((c) => (

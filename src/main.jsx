@@ -31,8 +31,8 @@ icon.rel = 'icon'
 icon.type = 'image/svg+xml'
 icon.href = URL.createObjectURL(new Blob([favicon], { type: 'image/svg+xml' }))
 
-// heading also loads italic (Fraunces italic is used for accents)
-const family = (name, italic) => `family=${name.replaceAll(' ', '+')}:${italic ? 'ital,wght@0,400;0,500;0,600;0,700;1,400;1,500' : 'wght@400;500;600;700'}`
+// the heading font loads italic and the optical-size axis; this assumes it has opsz like Fraunces (a re-skin heading without opsz needs the plain wght spec)
+const family = (name, italic) => `family=${name.replaceAll(' ', '+')}:${italic ? 'ital,opsz,wght@0,9..144,400..700;1,9..144,400..500' : 'wght@400;500;600;700'}`
 const fonts = document.createElement('link')
 fonts.rel = 'stylesheet'
 fonts.href = `https://fonts.googleapis.com/css2?${[family(shopConfig.fonts.heading, true), ...(shopConfig.fonts.body === shopConfig.fonts.heading ? [] : [family(shopConfig.fonts.body)])].join('&')}&display=swap`

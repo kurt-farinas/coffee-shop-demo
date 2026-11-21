@@ -8,7 +8,7 @@ export function ComingSoon({ page }) {
       <span aria-hidden="true" className="mx-auto grid size-12 place-items-center rounded-full bg-soft text-accent-ink">
         <PiHourglassMedium className="size-6" />
       </span>
-      <h1 className="mt-4 font-heading text-3xl font-medium">{page.label}</h1>
+      <h1 className="mt-4 font-heading text-3xl font-medium tracking-tight md:text-4xl">{page.label}</h1>
       <p className="mt-2 text-sm text-muted">This page is still brewing. Coming in Phase {PHASE[page.key]}.</p>
     </section>
   )

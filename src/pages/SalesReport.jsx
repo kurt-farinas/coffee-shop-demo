@@ -4,7 +4,7 @@ import { useDemoStore } from '../data/DemoStore.jsx'
 import { dailySales, itemSales, ordersBetween, paymentShares, paymentSplit, salesByCategory, summary } from '../data/reports.js'
 import { DailySalesChart } from '../components/SalesCharts.jsx'
 import { formatPeso } from '../lib/money.js'
-import { Stat, card } from './Dashboard.jsx'
+import { Stat, card, statStrip } from './Dashboard.jsx'
 
 const RANGES = [7, 30]
 const count = new Intl.NumberFormat(shopConfig.locale)
@@ -50,7 +50,7 @@ export function SalesReport() {
   return (
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-3xl font-medium">Sales report</h1>
+        <h1 className="font-heading text-3xl font-medium tracking-tight md:text-4xl">Sales report</h1>
         <div role="group" aria-label="Date range" className="inline-flex rounded-md border border-line bg-surface p-1">
           {RANGES.map((n) => (
             <button
@@ -67,7 +67,7 @@ export function SalesReport() {
       </div>
       <p className="mt-1 text-muted">Last {days} days, today included</p>
 
-      <dl className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <dl className={`${statStrip} lg:grid-cols-4`}>
         <Stat label="Sales" value={formatPeso(s.sales)} />
         <Stat label="Profit" value={formatPeso(s.profit)} />
         <Stat label="Orders" value={count.format(s.orders)} />

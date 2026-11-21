@@ -84,7 +84,7 @@ export function Pos() {
   return (
     <div className="grid gap-6 pb-24 lg:grid-cols-[minmax(0,1fr)_24rem] lg:pb-0">
       <section aria-labelledby="pos-title" className="min-w-0">
-        <h1 id="pos-title" className="font-heading text-3xl font-medium">Point of sale</h1>
+        <h1 id="pos-title" className="font-heading text-3xl font-medium tracking-tight md:text-4xl">Point of sale</h1>
         <div role="group" aria-label="Category" className="mt-4 flex flex-wrap gap-2">
           {categories.map((c) => (
             <button key={c} type="button" aria-pressed={category === c} onClick={() => setCategory(c)} className={pill(category === c)}>

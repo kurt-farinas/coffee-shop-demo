@@ -79,7 +79,7 @@ export function Staff() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-medium">Staff</h1>
+      <h1 className="font-heading text-3xl font-medium tracking-tight md:text-4xl">Staff</h1>
       <p className="mt-1 text-muted">
         {staff.length} {staff.length === 1 ? 'person' : 'people'} · {onToday} on shift today
       </p>
