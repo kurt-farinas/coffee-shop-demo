@@ -24,18 +24,23 @@ npm run build    # static files in dist/
 
 1. Edit `src/config/shop.config.js`:
    - `name`, `tagline`, `logoText`
+   - `heroImage`: the login photo (any https image URL; the `photo()` helper sizes Unsplash links)
    - `staff`: `ownerName`, `baristaName`
-   - `theme` colours: `rail`, `railInk`, `railActive`, `page`, `surface`, `line`, `soft`, `text`, `muted`, `accent`, `accentInk`, `highlight`, `warnBg`, `warnText`, `successBg`, `success`, `danger`
+   - `theme` colours: `rail`, `railInk`, `railActive`, `page`, `surface`, `line`, `soft`, `text`, `muted`, `rule` (heading and table rules), `accent` (button fill), `onAccent` (text on buttons), `accentInk` (red text), `highlight`, `warnBg`, `warnText`, `successBg`, `success`, `danger`
    - `fonts`: `heading` and `body` (any Google Fonts family)
    - `ingredients`: name, unit, stock, reorder level (`lowAt`) and cost per unit
-   - `menu`: items with category, price for a medium, `allowsShot` and the `recipe` (ingredient amounts per cup)
+   - `menu`: items with category, price for a medium, `allowsShot`, an optional `image` and the `recipe` (ingredient amounts per cup); items without a photo show their first letter
    - `locale` and `currency` if the client is outside the Philippines
 2. For link previews on chat apps and social sites, also update the static copies, because those sites don't run JavaScript:
    - `index.html`: `<title>`, `description` and `og:` tags
    - `public/favicon.svg`: the two colours (`rail` and `highlight`)
 3. Run `npm test` and `npm run dev`, then check the login page, the dashboard and the point of sale.
 
-Keep text readable: text colours need at least 4.5:1 contrast on `page`, `surface` and `soft`. The `accent` colour sits behind dark `text`, so keep it light enough for that.
+Keep text readable: text colours need at least 4.5:1 contrast on `page`, `surface` and `soft`, and `onAccent` on `accent`. `npm test` checks this and fails if a colour is too light.
+
+Shared styles (cards, buttons, labels, rules) live once in `src/index.css` as Tailwind utilities: `card`, `btn-primary`, `btn-ghost`, `label`, `rule`, `display-num`.
+
+Photos are free Unsplash images linked from Unsplash's servers, so the demo needs internet to show them.
 
 ## Stack
 
