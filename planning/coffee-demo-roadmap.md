@@ -151,7 +151,7 @@ Home page per role: owner and cashier `/`, barista `/queue` (so the redirect for
 - [ ] Queue page: New / Brewing / Ready columns, card shows order no., name, `optionsLabel` per line, minutes waiting; one button per card calls `advanceOrder`.
 - **Acceptance:** component tests: pay adds an order that appears in New; an out-of-stock item can't be added; Barista can't open `/pos`.
 
-### Phase 3 — Menu and inventory (provisional)
+### Phase 3 — Menu and inventory — DONE (reviewed, see git log)
 - [ ] Inventory: ingredient table (stock in unit, low-stock badge, cost column owner-only), restock form.
 - [ ] Menu manager (owner): edit price and recipe quantities; add/hide an item. Needs store actions `updateItem`, validated (price ≥ 1, recipe ingredient exists).
 - **Acceptance:** Cashier sees no cost column; restock raises stock; a price change shows on the POS.

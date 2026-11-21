@@ -15,8 +15,8 @@ const BADGE = {
 // below md each row is a card; the small labels stand in for the hidden table header
 function Cell({ label, children, className = '' }) {
   return (
-    <td className={`md:table-cell md:px-4 md:py-3 ${className}`}>
-      <span className="block text-xs text-muted md:hidden">{label}</span>
+    <td className={`lg:table-cell lg:px-4 lg:py-3 ${className}`}>
+      <span className="block text-xs text-muted lg:hidden">{label}</span>
       {children}
     </td>
   )
@@ -83,8 +83,8 @@ export function Inventory() {
           {rows.map((ing) => {
             const badge = BADGE[stockState(ing)]
             return (
-              <tr key={ing.id} className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-2xl border border-line bg-surface p-4 md:table-row md:rounded-none md:border-0 md:border-b md:p-0 md:last:border-b-0">
-                <th scope="row" className="col-span-2 text-left font-heading text-xl font-semibold break-words md:table-cell md:px-4 md:py-3 md:font-body md:text-base">
+              <tr key={ing.id} className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-2xl border border-line bg-surface p-4 lg:table-row lg:rounded-none lg:border-0 lg:border-b lg:p-0 lg:last:border-b-0">
+                <th scope="row" className="col-span-2 text-left font-heading text-xl font-semibold break-words lg:table-cell lg:px-4 lg:py-3 lg:font-body lg:text-base">
                   {ing.name}
                 </th>
                 <Cell label="Stock">
@@ -101,12 +101,12 @@ export function Inventory() {
                 <Cell label="Reorder at"><span>{formatAmount(ing.lowAt, ing.unit)}</span></Cell>
                 {showCost && <Cell label="Cost per unit" className="whitespace-nowrap"><span>{costLabel(ing)}</span></Cell>}
                 {showCost && <Cell label="Stock value"><span>{formatPeso(stockValue(ing))}</span></Cell>}
-                <td className="col-span-2 md:table-cell md:px-4 md:py-3 md:text-right">
+                <td className="col-span-2 lg:table-cell lg:px-4 lg:py-3 lg:text-right">
                   <button
                     type="button"
                     aria-label={`Restock ${ing.name}`}
                     onClick={() => open(ing.id)}
-                    className="min-h-11 w-full rounded-full border border-line px-4 text-sm font-semibold transition hover:bg-soft md:w-auto"
+                    className="min-h-11 w-full rounded-full border border-line px-4 text-sm font-semibold transition hover:bg-soft lg:w-auto"
                   >
                     Restock
                   </button>
