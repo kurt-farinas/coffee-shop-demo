@@ -9,9 +9,13 @@ import { Pos } from '../pages/Pos.jsx'
 import { Inventory } from '../pages/Inventory.jsx'
 import { Queue } from '../pages/Queue.jsx'
 import { Staff } from '../pages/Staff.jsx'
+import { Dashboard } from '../pages/Dashboard.jsx'
+import { SalesReport } from '../pages/SalesReport.jsx'
 
 // built pages, one line each: key → element; pages not listed show ComingSoon
 const PAGE_ELEMENTS = {
+  dashboard: <Dashboard />,
+  'sales-report': <SalesReport />,
   pos: <Pos />,
   queue: <Queue />,
   inventory: <Inventory />,
