@@ -2,6 +2,15 @@
 
 Live: https://coffee-shop-demo-rho.vercel.app (Vercel, team "kurt's things", project coffee-shop-demo, deploys on every push to `main`). The plain `coffee-shop-demo.vercel.app` name belongs to someone else, so Vercel added `-rho`.
 
+## 2026-11-21 13:53 — 5b46292 — Editorial redesign ("Kanto roast": new palette, photos, every page restyled)
+- By: Claude, requested by Kurt
+- Card: #149
+- Code: d88b646 → 5b46292
+- Migrations: none
+- Backup: none (static site, no database)
+- Data changes: none (all data is fake and lives in the browser)
+- Verified: live site serves assets/index-BMPb1WOK.js with the oat page colour (#EFE8DC); login shows the "Kanto Coffee" split hero with the 1600 px café photo loaded; as Owner all 7 pages (dashboard, point of sale, order queue, inventory, menu, staff, sales report) load with their headings and no sideways scroll; POS shows all 10 drink photos loaded; a Latte for "Live Test 3" paid with toast "Order O-2915 sent to the bar" and appears on the queue; 0 console errors.
+
 ## 2026-11-21 13:27 — d4f9a23 — One Barista role (cashier and barista merged)
 - By: Claude, requested by Kurt
 - Card: #148
