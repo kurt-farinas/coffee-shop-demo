@@ -69,7 +69,7 @@ Home page per role: owner and cashier `/`, barista `/queue` (so the redirect for
 
 ## 5. Roadmap
 
-### Phase 1 — Project, data core and roles (no real pages yet)
+### Phase 1 — Project, data core and roles (no real pages yet) — DONE (3582ddc)
 
 **Outcome:** `npm test` green on the domain rules; `npm run dev` shows a login with three roles and a shell whose sidebar shows only that role's pages (each a "Coming soon" placeholder).
 
@@ -146,7 +146,7 @@ Home page per role: owner and cashier `/`, barista `/queue` (so the redirect for
 
 **Phase 1 acceptance:** all checks above, committed on `main` of the new `coffee-demo` repo (local only, no push).
 
-### Phase 2 — POS and barista queue (provisional)
+### Phase 2 — POS and barista queue — DONE (reviewed, see git log)
 - [ ] POS page: category tabs, item grid, options sheet (size / milk / shot / sugar, hidden when the item ignores them), cart with qty and remove, customer name, Cash / GCash, pay → `placeOrder`; error toast from `validateOrder`; items that can't be made with current stock shown as "Out".
 - [ ] Queue page: New / Brewing / Ready columns, card shows order no., name, `optionsLabel` per line, minutes waiting; one button per card calls `advanceOrder`.
 - **Acceptance:** component tests: pay adds an order that appears in New; an out-of-stock item can't be added; Barista can't open `/pos`.

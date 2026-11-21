@@ -64,6 +64,16 @@ describe('Pos', () => {
     expect(el.querySelector('#customer-name').value).toBe('')
   })
 
+  it('a late close event from the last sheet does not empty the next one', () => {
+    mount()
+    tap('Latte')
+    tap('Add to order')
+    tap('Latte')
+    // browsers fire close as a queued task, so it can land after a fast tap has reopened the sheet
+    act(() => el.querySelector('dialog').dispatchEvent(new Event('close')))
+    expect(button('Add to order')).toBeDefined()
+  })
+
   it('two fast taps on Pay place one order', () => {
     mount()
     const before = store.state.orders.length

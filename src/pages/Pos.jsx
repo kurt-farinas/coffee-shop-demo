@@ -189,7 +189,8 @@ export function Pos() {
       <dialog
         ref={sheet}
         aria-label={picked ? `${picked.item.name} options` : 'Options'}
-        onClose={() => setPicked(null)}
+        // close fires as a queued task; ignore it if a fast tap has already reopened the sheet
+        onClose={() => !sheet.current.open && setPicked(null)}
         onClick={(e) => e.target === sheet.current && sheet.current.close()}
         className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-2xl bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-2xl"
       >
