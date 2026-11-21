@@ -20,7 +20,7 @@ export function Login() {
   return (
     <main className="grid min-h-dvh bg-page md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
       <div className="relative h-[38vh] overflow-hidden bg-rail md:order-2 md:h-auto">
-        <Photo src={shopConfig.heroImage} label={shopConfig.name} className="size-full object-[85%_center] text-8xl" />
+        <Photo loading="eager" src={shopConfig.heroImage} label={shopConfig.name} className="size-full object-[85%_center] text-8xl" />
       </div>
 
       <div className="flex flex-col px-5 py-10 md:px-14 md:py-14 lg:px-20">

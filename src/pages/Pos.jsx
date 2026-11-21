@@ -101,16 +101,16 @@ export function Pos() {
                 type="button"
                 disabled={out}
                 onClick={() => tapItem(item)}
-                className="group flex flex-col items-stretch overflow-hidden rounded-md border border-line bg-surface text-left transition hover:border-rule disabled:cursor-not-allowed disabled:bg-soft disabled:hover:border-line"
+                className="group relative flex flex-col items-stretch overflow-hidden rounded-md border border-line bg-surface text-left transition hover:border-rule disabled:cursor-not-allowed disabled:bg-soft disabled:hover:border-line"
               >
-                <span className="relative block">
+                <span className="block">
                   <Photo src={item.image} label={item.name} className="aspect-[4/3] w-full text-4xl transition-transform duration-200 group-enabled:group-hover:scale-[1.03] group-disabled:opacity-50 group-disabled:grayscale" />
-                  {out && <span className="absolute top-2 left-2 rounded-md bg-surface px-2 py-0.5 text-xs font-semibold text-danger">Out</span>}
                 </span>
                 <span className="flex flex-1 flex-col p-3">
                   <span className="font-heading text-lg leading-tight font-medium break-words hyphens-auto">{item.name}</span>
                   <span className="display-num mt-auto pt-1 text-xl text-accent-ink">{formatPeso(item.price)}</span>
                 </span>
+                {out && <span className="absolute top-2 left-2 rounded-md bg-surface px-2 py-0.5 text-xs font-semibold text-danger">Out</span>}
               </button>
             )
           })}

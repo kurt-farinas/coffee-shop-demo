@@ -48,7 +48,7 @@ body {
   outline-color: var(--color-highlight);
 }
 
-/* from md up the header is white, so it goes back to the rail ring */
+/* from md up the header is the light page colour, so it goes back to the rail ring */
 @media (min-width: 48rem) {
   header.bg-rail :focus-visible {
     outline-color: var(--color-rail);

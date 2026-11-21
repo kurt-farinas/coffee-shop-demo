@@ -32,7 +32,7 @@ const fromForm = (f) => ({
 })
 
 const field = 'min-h-11 rounded-md border border-line bg-surface px-3 text-base font-normal'
-const ghost = 'btn-ghost gap-1.5 px-4'
+const ghost = 'btn-ghost gap-1.5 bg-surface px-4'
 const check = 'inline-flex min-h-11 items-center gap-2 text-sm'
 
 function ItemRow({ item, ingredients, onEdit, onToggle }) {

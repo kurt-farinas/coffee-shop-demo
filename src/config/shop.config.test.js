@@ -29,7 +29,7 @@ describe('shopConfig.theme', () => {
   const t = shopConfig.theme
   const pairs = [
     ...['text', 'muted', 'accentInk', 'warnText', 'success', 'danger'].flatMap((fg) => ['page', 'surface', 'soft'].map((bg) => [fg, bg])),
-    ['onAccent', 'accent'], ['text', 'highlight'], ['railInk', 'rail'], ['warnText', 'warnBg'], ['success', 'successBg'],
+    ['onAccent', 'accent'], ['text', 'highlight'], ['surface', 'danger'], ['highlight', 'rail'], ['muted', 'warnBg'], ['railInk', 'rail'], ['warnText', 'warnBg'], ['success', 'successBg'],
   ]
   it.each(pairs)('keeps %s readable on %s (4.5:1)', (fg, bg) => {
     expect(t[fg], fg).toBeDefined()
