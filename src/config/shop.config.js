@@ -1,8 +1,13 @@
-// Everything a re-skin for a new client touches: name, colours, fonts, menu and ingredients.
+// Everything a re-skin for a new client touches: name, colours, fonts, photos, menu and ingredients.
+
+// free Unsplash photos (Unsplash licence), linked from Unsplash's image CDN at the size each place shows them
+const photo = (id, width = 640) => `https://images.unsplash.com/${id}?w=${width}&q=70&auto=format&fit=crop`
+
 export const shopConfig = {
   name: 'Kanto Coffee',
   tagline: 'Orders, barista queue and ingredient stock for your coffee shop, in one place.',
   logoText: 'KC',
+  heroImage: photo('photo-1572982270699-473dfa34d7e7', 1600),
   locale: 'en-PH',
   currency: 'PHP',
   staff: { ownerName: 'Bea Santos', baristaName: 'Migo Reyes' },
@@ -46,44 +51,44 @@ export const shopConfig = {
   // prices are whole pesos for a medium; lines with scales change with size, milk lines take the chosen milk
   menu: [
     {
-      id: 'item-americano', name: 'Americano', category: 'Espresso', price: 120, allowsShot: true,
+      id: 'item-americano', name: 'Americano', category: 'Espresso', price: 120, allowsShot: true, image: photo('photo-1579992357154-faf4bde95b3d'),
       recipe: [{ ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-water', qty: 200, scales: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
     {
-      id: 'item-latte', name: 'Latte', category: 'Espresso', price: 150, allowsShot: true,
+      id: 'item-latte', name: 'Latte', category: 'Espresso', price: 150, allowsShot: true, image: photo('photo-1760163178873-7644a924519e'),
       recipe: [{ ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-whole-milk', qty: 200, scales: true, milk: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
     {
-      id: 'item-iced-latte', name: 'Iced latte', category: 'Espresso', price: 160, allowsShot: true,
+      id: 'item-iced-latte', name: 'Iced latte', category: 'Espresso', price: 160, allowsShot: true, image: photo('photo-1578314675249-a6910f80cc4e'),
       recipe: [{ ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-whole-milk', qty: 200, scales: true, milk: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
     {
-      id: 'item-cappuccino', name: 'Cappuccino', category: 'Espresso', price: 150, allowsShot: true,
+      id: 'item-cappuccino', name: 'Cappuccino', category: 'Espresso', price: 150, allowsShot: true, image: photo('photo-1761783768352-e7f42bfa9988'),
       recipe: [{ ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-whole-milk', qty: 150, scales: true, milk: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
     {
-      id: 'item-spanish-latte', name: 'Spanish latte', category: 'Espresso', price: 170, allowsShot: true,
+      id: 'item-spanish-latte', name: 'Spanish latte', category: 'Espresso', price: 170, allowsShot: true, image: photo('photo-1609595428024-d5eec1a1af06'),
       recipe: [
         { ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-whole-milk', qty: 180, scales: true, milk: true },
         { ingredientId: 'ing-condensed', qty: 30, scales: true }, { ingredientId: 'ing-cup', qty: 1 },
       ],
     },
     {
-      id: 'item-caramel-macchiato', name: 'Caramel macchiato', category: 'Espresso', price: 180, allowsShot: true,
+      id: 'item-caramel-macchiato', name: 'Caramel macchiato', category: 'Espresso', price: 180, allowsShot: true, image: photo('photo-1570517130750-10c67ffdde09'),
       recipe: [
         { ingredientId: 'ing-beans', qty: 18 }, { ingredientId: 'ing-whole-milk', qty: 200, scales: true, milk: true },
         { ingredientId: 'ing-caramel', qty: 20, scales: true }, { ingredientId: 'ing-cup', qty: 1 },
       ],
     },
     {
-      id: 'item-matcha-latte', name: 'Matcha latte', category: 'Non-coffee', price: 170, allowsShot: false,
+      id: 'item-matcha-latte', name: 'Matcha latte', category: 'Non-coffee', price: 170, allowsShot: false, image: photo('photo-1515823064-d6e0c04616a7'),
       recipe: [{ ingredientId: 'ing-matcha', qty: 5 }, { ingredientId: 'ing-whole-milk', qty: 200, scales: true, milk: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
     {
-      id: 'item-chocolate', name: 'Chocolate', category: 'Non-coffee', price: 150, allowsShot: false,
+      id: 'item-chocolate', name: 'Chocolate', category: 'Non-coffee', price: 150, allowsShot: false, image: photo('photo-1517578239113-b03992dcdd25'),
       recipe: [{ ingredientId: 'ing-choco', qty: 25 }, { ingredientId: 'ing-whole-milk', qty: 200, scales: true, milk: true }, { ingredientId: 'ing-cup', qty: 1 }],
     },
-    { id: 'item-croissant', name: 'Croissant', category: 'Pastry', price: 95, allowsShot: false, recipe: [{ ingredientId: 'ing-croissant', qty: 1 }] },
-    { id: 'item-ensaymada', name: 'Ensaymada', category: 'Pastry', price: 85, allowsShot: false, recipe: [{ ingredientId: 'ing-ensaymada', qty: 1 }] },
+    { id: 'item-croissant', name: 'Croissant', category: 'Pastry', price: 95, allowsShot: false, image: photo('photo-1763207291761-e27bb059d851'), recipe: [{ ingredientId: 'ing-croissant', qty: 1 }] },
+    { id: 'item-ensaymada', name: 'Ensaymada', category: 'Pastry', price: 85, allowsShot: false, image: photo('photo-1688084436286-8f0ca14e9390'), recipe: [{ ingredientId: 'ing-ensaymada', qty: 1 }] },
   ],
 }

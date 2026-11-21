@@ -17,6 +17,12 @@ describe('shopConfig', () => {
       }
     }
   })
+
+  it('uses https image urls when an item or the hero has one', () => {
+    for (const url of [shopConfig.heroImage, ...shopConfig.menu.map((m) => m.image)].filter(Boolean)) {
+      expect(url).toMatch(/^https:\/\//)
+    }
+  })
 })
 
 describe('shopConfig.theme', () => {

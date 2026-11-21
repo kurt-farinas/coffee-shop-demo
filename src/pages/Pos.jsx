@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { PiCaretUp, PiMinus, PiPlus, PiReceipt, PiTrash, PiX } from 'react-icons/pi'
 import { useDemoStore } from '../data/DemoStore.jsx'
 import { DEFAULT_OPTIONS, MILKS, SHOT, SIZES, SUGAR_LEVELS, choicesFor, linePrice, optionsLabel } from '../data/drinks.js'
+import { Photo } from '../components/Photo.jsx'
 import { formatPeso } from '../lib/money.js'
 import { addLine, canAdd, canMake, cartTotal, setQty } from './posCart.js'
 
@@ -100,11 +101,16 @@ export function Pos() {
                 type="button"
                 disabled={out}
                 onClick={() => tapItem(item)}
-                className="flex min-h-24 flex-col items-start rounded-2xl border border-line bg-surface p-4 text-left transition hover:border-accent disabled:cursor-not-allowed disabled:bg-soft disabled:hover:border-line"
+                className="group flex flex-col items-stretch overflow-hidden rounded-md border border-line bg-surface text-left transition hover:border-rule disabled:cursor-not-allowed disabled:bg-soft disabled:hover:border-line"
               >
-                <span className="font-heading text-lg leading-tight font-semibold break-words hyphens-auto">{item.name}</span>
-                <span className="mt-auto pt-2 text-sm font-semibold text-accent-ink tabular-nums">{formatPeso(item.price)}</span>
-                {out && <span className="mt-1 rounded-full bg-surface px-2 py-0.5 text-xs font-semibold text-danger">Out</span>}
+                <span className="relative block">
+                  <Photo src={item.image} label={item.name} className="aspect-[4/3] w-full text-4xl transition-transform duration-200 group-enabled:group-hover:scale-[1.03] group-disabled:opacity-50 group-disabled:grayscale" />
+                  {out && <span className="absolute top-2 left-2 rounded-md bg-surface px-2 py-0.5 text-xs font-semibold text-danger">Out</span>}
+                </span>
+                <span className="flex flex-1 flex-col p-3">
+                  <span className="font-heading text-lg leading-tight font-medium break-words hyphens-auto">{item.name}</span>
+                  <span className="display-num mt-auto pt-1 text-xl text-accent-ink">{formatPeso(item.price)}</span>
+                </span>
               </button>
             )
           })}

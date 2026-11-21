@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { PiEye, PiEyeSlash, PiPencilSimple, PiPlus, PiTrash, PiX } from 'react-icons/pi'
 import { useDemoStore } from '../data/DemoStore.jsx'
 import { CATEGORIES, DEFAULT_OPTIONS, MILKS, lineUsage } from '../data/drinks.js'
+import { Photo } from '../components/Photo.jsx'
 import { formatPeso } from '../lib/money.js'
 
 const MILK_IDS = Object.values(MILKS).map((m) => m.ingredientId)
@@ -43,8 +44,9 @@ function ItemRow({ item, ingredients, onEdit, onToggle }) {
     })
     .join(' · ')
   return (
-    <li className={`flex flex-wrap items-start gap-x-4 gap-y-3 rounded-2xl border border-line p-4 ${item.hidden ? 'bg-soft' : 'bg-surface'}`}>
-      <div className="min-w-0 flex-1 basis-56">
+    <li className={`flex flex-wrap items-start gap-x-4 gap-y-3 rounded-md border border-line p-4 ${item.hidden ? 'bg-soft' : 'bg-surface'}`}>
+      <Photo src={item.image} label={item.name} className={`size-20 shrink-0 rounded-md text-3xl ${item.hidden ? 'opacity-50 grayscale' : ''}`} />
+      <div className="min-w-0 flex-1 basis-48">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h3 className="font-heading text-lg font-semibold [overflow-wrap:anywhere]">{item.name}</h3>
           <span className="font-semibold">{formatPeso(item.price)}</span>
