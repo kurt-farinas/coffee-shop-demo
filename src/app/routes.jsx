@@ -5,14 +5,17 @@ import { AppShell } from '../layout/AppShell.jsx'
 import { Login } from '../pages/Login.jsx'
 import { ComingSoon } from '../pages/ComingSoon.jsx'
 
-// every page is a placeholder until its phase lands; real pages replace ComingSoon here, lazily loaded
+// built pages, one line each: key → element; pages not listed show ComingSoon
+const PAGE_ELEMENTS = {
+}
+
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<AppShell />}>
         {PAGES.map((p) => (
-          <Route key={p.key} path={p.path} element={<RequireRole page={p.key}><ComingSoon page={p} /></RequireRole>} />
+          <Route key={p.key} path={p.path} element={<RequireRole page={p.key}>{PAGE_ELEMENTS[p.key] ?? <ComingSoon page={p} />}</RequireRole>} />
         ))}
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
