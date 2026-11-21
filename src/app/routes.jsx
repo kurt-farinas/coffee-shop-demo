@@ -4,9 +4,11 @@ import { RequireRole } from '../components/RequireRole.jsx'
 import { AppShell } from '../layout/AppShell.jsx'
 import { Login } from '../pages/Login.jsx'
 import { ComingSoon } from '../pages/ComingSoon.jsx'
+import { Queue } from '../pages/Queue.jsx'
 
 // built pages, one line each: key → element; pages not listed show ComingSoon
 const PAGE_ELEMENTS = {
+  queue: <Queue />,
 }
 
 export function AppRoutes() {
