@@ -32,6 +32,7 @@ Kanban card: #149 (Side Hustle, section coffee-client)
 | How far | B: new third-wave editorial look, all pages | User-confirmed (Q1) |
 | Photos | Free stock photos (Unsplash), optional `image` per menu item + `heroImage`, typographic fallback | User-confirmed (Q2) |
 | Palette and type | C "Kanto roast": oat `#EFE8DC`, espresso `#1E1410`, jeepney red `#B8361F`, Fraunces + DM Sans | User-confirmed (Q3, from mockup) |
+| Palette change (after first deploy) | Calm brown and cream: cream `#F7F1E8` page, brown `#3B2A20` rail, brown `#7A4E2D` buttons with white text, latte `#E3C9A2` highlight; red dropped. Charts: brown bars, green profit line | User-confirmed (2026-11-21, "i want the calm brown and cream") |
 | Build approach | A: theme tokens in config + ~7 shared CSS classes in `index.css`; pages swap long Tailwind strings for them. Rejected: B React components (moves page markup, more churn), C Tailwind-only per page (keeps 5x copied card styling) | Delegated (Q4) |
 | Photo hosting | Hotlink `images.unsplash.com` URLs with `?w=…&auto=format&q=70` (Unsplash's guidelines ask for hotlinking); no files downloaded into the repo | Assumption |
 | Accent meaning | `accent` becomes the red **fill** with white text (`onAccent`); `accentInk` is red used as text. Old "accent behind dark text" rule in README is replaced | Assumption (forced by the palette) |

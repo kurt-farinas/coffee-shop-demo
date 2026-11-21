@@ -2,9 +2,9 @@ import { ResponsiveContainer, ComposedChart, BarChart, Bar, Line, XAxis, YAxis, 
 import { shopConfig } from '../config/shop.config.js'
 import { formatPeso, kilo } from '../lib/money.js'
 
-// espresso bars carry the volume; the red accent marks profit
-const SALES = 'var(--color-rail)'
-const PROFIT = 'var(--color-accent)'
+// brown bars carry the volume; profit is a green line so it never blends into the bars
+const SALES = 'var(--color-accent)'
+const PROFIT = 'var(--color-success)'
 const tick = { fontSize: 12, fill: 'var(--color-muted)' }
 const cursor = { fill: 'var(--color-soft)', fillOpacity: 0.6 }
 const grid = <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--color-line)" />

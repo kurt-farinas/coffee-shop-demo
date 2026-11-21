@@ -95,7 +95,7 @@ export function SalesReport() {
             <h2 id="payment" className="font-heading text-xl font-medium">Cash vs GCash</h2>
             <div aria-hidden="true" className="mt-4 flex h-3 overflow-hidden rounded-full bg-soft">
               <div className="bg-accent" style={{ width: `${shares.cash}%` }} />
-              <div className="bg-rail" style={{ width: `${shares.gcash}%` }} />
+              <div className="bg-highlight" style={{ width: `${shares.gcash}%` }} />
             </div>
             <dl className="mt-3 grid grid-cols-2 gap-3">
               <div>
@@ -104,7 +104,7 @@ export function SalesReport() {
                 <dd className="text-sm text-muted">{shares.cash}% of sales</dd>
               </div>
               <div>
-                <dt className="inline-flex items-center gap-1.5 text-sm text-muted"><span aria-hidden="true" className="size-2.5 rounded-sm bg-rail" />GCash</dt>
+                <dt className="inline-flex items-center gap-1.5 text-sm text-muted"><span aria-hidden="true" className="size-2.5 rounded-sm bg-highlight" />GCash</dt>
                 <dd className="mt-1 font-heading text-xl font-medium tabular-nums">{formatPeso(pay.gcash)}</dd>
                 <dd className="text-sm text-muted">{shares.gcash}% of sales</dd>
               </div>
