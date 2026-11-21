@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* colours come from shopConfig.theme via applyTheme (--brand-*), so a re-skin needs no CSS edits */
+@theme {
+  --color-rail: var(--brand-rail);
+  --color-rail-ink: var(--brand-rail-ink);
+  --color-rail-active: var(--brand-rail-active);
+  --color-page: var(--brand-page);
+  --color-surface: var(--brand-surface);
+  --color-line: var(--brand-line);
+  --color-soft: var(--brand-soft);
+  --color-ink: var(--brand-text);
+  --color-muted: var(--brand-muted);
+  --color-accent: var(--brand-accent);
+  --color-accent-ink: var(--brand-accent-ink);
+  --color-highlight: var(--brand-highlight);
+  --color-warn-bg: var(--brand-warn-bg);
+  --color-warn-ink: var(--brand-warn-text);
+  --color-success-bg: var(--brand-success-bg);
+  --color-success: var(--brand-success);
+  --color-danger: var(--brand-danger);
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-rail);
+  outline-offset: 2px;
+}
