@@ -10,7 +10,7 @@ import { addLine, canAdd, canMake, cartTotal, setQty } from './posCart.js'
 const extra = (add) => (add ? `${add > 0 ? '+' : '−'}${formatPeso(Math.abs(add))}` : '')
 
 const pill = (on) =>
-  `inline-flex min-h-11 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition-colors ${
+  `inline-flex min-h-11 items-center gap-1.5 rounded-md border px-4 text-sm font-medium transition-colors ${
     on ? 'border-rail bg-rail text-rail-ink' : 'border-line bg-surface text-ink hover:bg-soft'
   } disabled:cursor-not-allowed disabled:opacity-60`
 
@@ -84,7 +84,7 @@ export function Pos() {
   return (
     <div className="grid gap-6 pb-24 lg:grid-cols-[minmax(0,1fr)_24rem] lg:pb-0">
       <section aria-labelledby="pos-title" className="min-w-0">
-        <h1 id="pos-title" className="font-heading text-3xl font-semibold">Point of sale</h1>
+        <h1 id="pos-title" className="font-heading text-3xl font-medium">Point of sale</h1>
         <div role="group" aria-label="Category" className="mt-4 flex flex-wrap gap-2">
           {categories.map((c) => (
             <button key={c} type="button" aria-pressed={category === c} onClick={() => setCategory(c)} className={pill(category === c)}>
@@ -119,7 +119,7 @@ export function Pos() {
 
       <aside
         aria-label="Current order"
-        className="fixed inset-x-0 bottom-0 z-10 md:left-60 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] lg:sticky lg:top-6 lg:self-start lg:rounded-2xl lg:border lg:shadow-none"
+        className="fixed inset-x-0 bottom-0 z-10 md:left-60 border-t border-line bg-surface shadow-[0_-12px_30px_-18px_rgb(43_25_15/0.6)] lg:sticky lg:top-6 lg:self-start lg:rounded-md lg:border lg:shadow-none"
       >
         <button
           type="button"
@@ -135,7 +135,7 @@ export function Pos() {
         </button>
 
         <div className={`${cartOpen ? 'flex' : 'hidden'} max-h-[70dvh] flex-col gap-4 overflow-y-auto p-4 lg:flex lg:max-h-none lg:p-5`}>
-          <h2 className="font-heading text-xl font-semibold">Order</h2>
+          <h2 className="font-heading text-xl font-medium">Order</h2>
           {cart.length === 0 ? (
             <p className="text-sm text-muted">Tap an item to add it.</p>
           ) : (
@@ -150,14 +150,14 @@ export function Pos() {
                     </span>
                     <span className="font-semibold">{formatPeso(l.qty * linePrice(item, l.options))}</span>
                     <span className="flex w-full items-center gap-1">
-                      <button type="button" aria-label={`One less ${item.name}`} onClick={() => setCart((c) => setQty(c, l.key, l.qty - 1))} className="inline-flex size-11 items-center justify-center rounded-full border border-line hover:bg-soft">
+                      <button type="button" aria-label={`One less ${item.name}`} onClick={() => setCart((c) => setQty(c, l.key, l.qty - 1))} className="inline-flex size-11 items-center justify-center rounded-md border border-line hover:bg-soft">
                         <PiMinus aria-hidden="true" className="size-4" />
                       </button>
                       <span className="w-8 text-center font-semibold" aria-label={`Quantity ${l.qty}`}>{l.qty}</span>
-                      <button type="button" aria-label={`One more ${item.name}`} onClick={() => setCart((c) => setQty(c, l.key, l.qty + 1))} className="inline-flex size-11 items-center justify-center rounded-full border border-line hover:bg-soft">
+                      <button type="button" aria-label={`One more ${item.name}`} onClick={() => setCart((c) => setQty(c, l.key, l.qty + 1))} className="inline-flex size-11 items-center justify-center rounded-md border border-line hover:bg-soft">
                         <PiPlus aria-hidden="true" className="size-4" />
                       </button>
-                      <button type="button" onClick={() => setCart((c) => setQty(c, l.key, 0))} className="ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-sm text-danger hover:bg-soft">
+                      <button type="button" onClick={() => setCart((c) => setQty(c, l.key, 0))} className="ml-auto inline-flex min-h-11 items-center gap-1.5 rounded-md px-3 text-sm text-danger hover:bg-soft">
                         <PiTrash aria-hidden="true" className="size-4" />
                         Remove<span className="sr-only"> {item.name}</span>
                       </button>
@@ -167,9 +167,9 @@ export function Pos() {
               })}
             </ul>
           )}
-          <p className="flex items-baseline justify-between border-t border-line pt-3">
+          <p className="rule flex items-baseline justify-between pt-3">
             <span className="text-sm text-muted">Total</span>
-            <span className="font-heading text-2xl font-semibold">{formatPeso(total)}</span>
+            <span className="display-num text-3xl">{formatPeso(total)}</span>
           </p>
           <label className="flex flex-col gap-1.5 text-sm font-semibold">
             Customer name
@@ -178,7 +178,7 @@ export function Pos() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoComplete="off"
-              className="min-h-11 rounded-xl border border-line bg-surface px-3 text-base font-normal"
+              className="min-h-11 rounded-md border border-line bg-surface px-3 text-base font-normal"
             />
           </label>
           <Choice legend="Payment" value={payment} onChange={setPayment} options={[{ value: 'cash', label: 'Cash' }, { value: 'gcash', label: 'GCash' }]} />
@@ -199,13 +199,13 @@ export function Pos() {
         // close fires as a queued task; ignore it if a fast tap has already reopened the sheet
         onClose={() => !sheet.current.open && setPicked(null)}
         onClick={(e) => e.target === sheet.current && sheet.current.close()}
-        className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-2xl bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-2xl"
+        className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-lg bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-lg"
       >
         {picked && (
           <div className="flex flex-col gap-5 p-5">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="font-heading text-2xl font-semibold">{picked.item.name}</h2>
-              <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-soft">
+              <h2 className="font-heading text-2xl font-medium">{picked.item.name}</h2>
+              <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-md hover:bg-soft">
                 <PiX aria-hidden="true" className="size-5" />
               </button>
             </div>

@@ -22,16 +22,16 @@ const greeting = (hour) => (hour < 12 ? 'Good morning' : hour < 18 ? 'Good after
 
 export function Stat({ label, value, children }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface p-4">
-      <dt className="text-sm text-muted">{label}</dt>
-      <dd className="mt-1 font-heading text-2xl font-semibold tabular-nums">{value}</dd>
+    <div className="card md:p-4">
+      <dt className="label">{label}</dt>
+      <dd className="display-num mt-2 text-2xl xl:text-3xl">{value}</dd>
       {children}
     </div>
   )
 }
 
-export const card = 'rounded-2xl border border-line bg-surface p-4 md:p-5'
-const linkClass = 'mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm font-semibold transition hover:bg-soft'
+export const card = 'card'
+const linkClass = 'btn-ghost mt-4 px-4'
 
 export function Dashboard() {
   const { state } = useDemoStore()
@@ -49,7 +49,7 @@ export function Dashboard() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-semibold">
+      <h1 className="font-heading text-3xl font-medium">
         {greeting(now.getHours())}, {ROLES[role].person.split(' ')[0]}
       </h1>
       <p className="mt-1 text-muted">{longDate.format(now)}</p>
@@ -69,17 +69,17 @@ export function Dashboard() {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <section aria-labelledby="hourly" className={`${card} min-w-0 lg:col-span-2`}>
-          <h2 id="hourly" className="font-heading text-xl font-semibold">Sales by hour</h2>
+          <h2 id="hourly" className="font-heading text-xl font-medium">Sales by hour</h2>
           <HourlySalesChart rows={salesByHour(todays)} />
         </section>
 
         <section aria-labelledby="best" className={card}>
-          <h2 id="best" className="font-heading text-xl font-semibold">Best sellers today</h2>
+          <h2 id="best" className="font-heading text-xl font-medium">Best sellers today</h2>
           {top.length ? (
             <ol className="mt-3 divide-y divide-line">
               {top.map((item, i) => (
                 <li key={item.itemId} className="flex items-baseline gap-3 py-2.5">
-                  <span className="w-4 text-sm text-muted tabular-nums">{i + 1}</span>
+                  <span className="w-5 font-heading text-lg text-accent-ink italic tabular-nums">{i + 1}</span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold">{item.name}</span>
                     <span className="block text-sm text-muted tabular-nums">{item.qty} sold</span>
@@ -96,7 +96,7 @@ export function Dashboard() {
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <section aria-labelledby="low" className={card}>
-          <h2 id="low" className="font-heading text-xl font-semibold">Low stock</h2>
+          <h2 id="low" className="font-heading text-xl font-medium">Low stock</h2>
           {low.length ? (
             <ul className="mt-3 divide-y divide-line">
               {low.map((ing) => (
@@ -104,7 +104,7 @@ export function Dashboard() {
                   <span className="font-semibold">{ing.name}</span>
                   <span className="inline-flex items-center gap-2 text-sm">
                     {formatAmount(ing.stock, ing.unit)} left
-                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${stockState(ing) === 'out' ? 'bg-danger text-surface' : 'bg-warn-bg text-warn-ink'}`}>
+                    <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold ${stockState(ing) === 'out' ? 'bg-danger text-surface' : 'bg-warn-bg text-warn-ink'}`}>
                       <PiWarning aria-hidden="true" className="size-3.5" />
                       {stockState(ing) === 'out' ? 'Out' : 'Low'}
                     </span>
@@ -124,11 +124,11 @@ export function Dashboard() {
         </section>
 
         <section aria-labelledby="open" className={card}>
-          <h2 id="open" className="font-heading text-xl font-semibold">Order queue</h2>
+          <h2 id="open" className="font-heading text-xl font-medium">Order queue</h2>
           <dl className="mt-3">
             <div>
-              <dt className="text-sm text-muted">Open orders</dt>
-              <dd className="mt-1 font-heading text-4xl font-semibold tabular-nums">{open}</dd>
+              <dt className="label">Open orders</dt>
+              <dd className="display-num mt-2 text-5xl">{open}</dd>
             </div>
           </dl>
           <Link to="/queue" className={linkClass}>

@@ -5,7 +5,7 @@ import { useDemoStore } from '../data/DemoStore.jsx'
 import { WEEK, dayOf, initials, onShift, tenureLabel, weekRoster } from './staffView.js'
 
 const FILTERS = [{ key: 'all', label: 'All' }, ...Object.entries(ROLES).map(([key, r]) => ({ key, label: r.label }))]
-const th = 'px-3 py-3 text-left text-xs font-semibold tracking-[0.15em] text-muted uppercase sm:px-4'
+const th = 'px-3 py-3 text-left label sm:px-4'
 const td = 'px-3 py-3 align-top sm:px-4'
 
 function WeekStrip({ schedule, today }) {
@@ -33,16 +33,16 @@ function WeekStrip({ schedule, today }) {
 function PersonCard({ person, now }) {
   const on = onShift(person, now)
   return (
-    <li data-testid="staff-card" className="rounded-2xl border border-line bg-surface p-4">
+    <li data-testid="staff-card" className="card md:p-4">
       <div className="flex items-start gap-3">
         <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-rail font-heading text-lg font-medium text-rail-ink">
           {initials(person.name)}
         </span>
         <div className="min-w-0 flex-1">
-          <h3 className="font-heading text-lg font-semibold [overflow-wrap:anywhere]">{person.name}</h3>
+          <h3 className="font-heading text-lg font-medium [overflow-wrap:anywhere]">{person.name}</h3>
           <p className="text-sm text-muted">{ROLES[person.role].label}</p>
           {on && (
-            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-success-bg px-2 py-0.5 text-xs font-semibold text-success">
+            <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-success-bg px-2 py-0.5 text-xs font-semibold text-success">
               <PiCheckCircle aria-hidden="true" className="size-4" />
               On shift today
             </span>
@@ -62,7 +62,7 @@ function PersonCard({ person, now }) {
 function Names({ names }) {
   if (names.length) return names.join(', ')
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-warn-bg px-2 py-0.5 text-sm font-semibold text-warn-ink">
+    <span className="inline-flex items-center gap-1 rounded-md bg-warn-bg px-2 py-0.5 text-sm font-semibold text-warn-ink">
       <PiWarning aria-hidden="true" className="size-4" />
       Nobody scheduled
     </span>
@@ -79,7 +79,7 @@ export function Staff() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="font-heading text-3xl font-semibold">Staff</h1>
+      <h1 className="font-heading text-3xl font-medium">Staff</h1>
       <p className="mt-1 text-muted">
         {staff.length} {staff.length === 1 ? 'person' : 'people'} · {onToday} on shift today
       </p>
@@ -91,7 +91,7 @@ export function Staff() {
             type="button"
             aria-pressed={filter === f.key}
             onClick={() => setFilter(f.key)}
-            className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition ${filter === f.key ? 'border-rail bg-rail text-rail-ink' : 'border-line bg-surface hover:bg-soft'}`}
+            className={`min-h-11 rounded-md border px-4 text-sm font-semibold transition ${filter === f.key ? 'border-rail bg-rail text-rail-ink' : 'border-line bg-surface hover:bg-soft'}`}
           >
             {f.label}
           </button>
@@ -105,9 +105,9 @@ export function Staff() {
       </ul>
 
       <section aria-labelledby="week-title" className="mt-8">
-        <h2 id="week-title" className="font-heading text-xl font-semibold">This week</h2>
-        <table className="mt-3 w-full overflow-hidden rounded-2xl border border-line bg-surface">
-          <thead className="border-b border-line bg-soft">
+        <h2 id="week-title" className="font-heading text-xl font-medium">This week</h2>
+        <table className="mt-3 w-full overflow-hidden rounded-md border border-line bg-surface">
+          <thead className="border-b-2 border-rule">
             <tr>
               <th scope="col" className={th}>Day</th>
               <th scope="col" className={th}>Baristas on shift</th>

@@ -2,8 +2,9 @@ import { ResponsiveContainer, ComposedChart, BarChart, Bar, Line, XAxis, YAxis, 
 import { shopConfig } from '../config/shop.config.js'
 import { formatPeso, kilo } from '../lib/money.js'
 
-const SALES = 'var(--color-accent)'
-const PROFIT = 'var(--color-rail)'
+// espresso bars carry the volume; the red accent marks profit
+const SALES = 'var(--color-rail)'
+const PROFIT = 'var(--color-accent)'
 const tick = { fontSize: 12, fill: 'var(--color-muted)' }
 const cursor = { fill: 'var(--color-soft)', fillOpacity: 0.6 }
 const grid = <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--color-line)" />
@@ -19,7 +20,7 @@ function PesoTooltip({ active, payload, series }) {
   if (!active || !payload?.length) return null
   const d = payload[0].payload
   return (
-    <div className="rounded-lg border border-line bg-surface px-3 py-2 text-xs shadow-sm">
+    <div className="rounded-md border border-line bg-surface px-3 py-2 text-xs shadow-sm">
       <div className="text-muted">{d.label}</div>
       {series.map(([key, name]) => (
         <div key={key} className="mt-0.5 flex justify-between gap-4 text-ink">
@@ -51,7 +52,7 @@ export function HourlySalesChart({ rows }) {
           <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: 'var(--color-line)' }} tick={tick} minTickGap={8} />
           {yAxis}
           <Tooltip cursor={cursor} content={<PesoTooltip series={[['sales', 'Sales']]} />} />
-          <Bar dataKey="sales" fill={SALES} maxBarSize={28} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+          <Bar dataKey="sales" fill={SALES} maxBarSize={28} radius={[2, 2, 0, 0]} isAnimationActive={false} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -78,7 +79,7 @@ export function DailySalesChart({ rows }) {
             <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: 'var(--color-line)' }} tick={tick} minTickGap={16} />
             {yAxis}
             <Tooltip cursor={cursor} content={<PesoTooltip series={[['sales', 'Sales'], ['profit', 'Profit']]} />} />
-            <Bar dataKey="sales" fill={SALES} maxBarSize={28} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+            <Bar dataKey="sales" fill={SALES} maxBarSize={28} radius={[2, 2, 0, 0]} isAnimationActive={false} />
             <Line dataKey="profit" stroke={PROFIT} strokeWidth={2} dot={false} activeDot={{ r: 4, fill: PROFIT }} isAnimationActive={false} />
           </ComposedChart>
         </ResponsiveContainer>

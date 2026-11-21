@@ -31,8 +31,8 @@ const fromForm = (f) => ({
   })),
 })
 
-const field = 'min-h-11 rounded-xl border border-line bg-surface px-3 text-base font-normal'
-const ghost = 'inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line bg-surface px-4 text-sm font-medium hover:bg-soft'
+const field = 'min-h-11 rounded-md border border-line bg-surface px-3 text-base font-normal'
+const ghost = 'btn-ghost gap-1.5 px-4'
 const check = 'inline-flex min-h-11 items-center gap-2 text-sm'
 
 function ItemRow({ item, ingredients, onEdit, onToggle }) {
@@ -48,9 +48,9 @@ function ItemRow({ item, ingredients, onEdit, onToggle }) {
       <Photo src={item.image} label={item.name} className={`size-20 shrink-0 rounded-md text-3xl ${item.hidden ? 'opacity-50 grayscale' : ''}`} />
       <div className="min-w-0 flex-1 basis-48">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h3 className="font-heading text-lg font-semibold [overflow-wrap:anywhere]">{item.name}</h3>
+          <h3 className="font-heading text-lg font-medium [overflow-wrap:anywhere]">{item.name}</h3>
           <span className="font-semibold">{formatPeso(item.price)}</span>
-          {item.hidden && <span className="rounded-full bg-surface px-2 py-0.5 text-xs font-semibold text-muted">Hidden</span>}
+          {item.hidden && <span className="rounded-md bg-surface px-2 py-0.5 text-xs font-semibold text-muted">Hidden</span>}
         </div>
         <p className="mt-1 text-sm text-muted">{summary}</p>
         <p className="mt-1 text-sm">
@@ -105,7 +105,7 @@ export function Menu() {
   return (
     <div className="mx-auto max-w-4xl">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-3xl font-semibold">Menu</h1>
+        <h1 className="font-heading text-3xl font-medium">Menu</h1>
         <button
           type="button"
           onClick={() => open({ name: '', category: CATEGORIES[0], price: '', allowsShot: false, recipe: [newLine(ingredients)] })}
@@ -118,7 +118,7 @@ export function Menu() {
 
       {CATEGORIES.map((c) => (
         <section key={c} aria-labelledby={`cat-${c}`} className="mt-6">
-          <h2 id={`cat-${c}`} className="text-sm font-semibold tracking-[0.15em] text-muted uppercase">{c}</h2>
+          <h2 id={`cat-${c}`} className="label rule pt-3">{c}</h2>
           <ul className="mt-3 space-y-3">
             {state.menu
               .filter((m) => m.category === c)
@@ -134,13 +134,13 @@ export function Menu() {
         aria-label={form?.id ? `Edit ${form.name}` : 'Add item'}
         // close fires as a queued task; ignore it if the dialog has already been reopened
         onClose={() => !sheet.current.open && setForm(null)}
-        className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-2xl bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-2xl"
+        className="mx-auto mt-auto mb-0 max-h-[90dvh] w-full max-w-lg rounded-t-lg bg-surface p-0 text-ink backdrop:bg-rail-active/60 md:mb-auto md:rounded-lg"
       >
         {form && (
           <form noValidate onSubmit={save} aria-describedby={error ? 'menu-form-error' : undefined} className="flex flex-col gap-4 p-5">
             <div className="flex items-start justify-between gap-3">
-              <h2 className="font-heading text-2xl font-semibold">{form.id ? 'Edit item' : 'Add item'}</h2>
-              <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-soft">
+              <h2 className="font-heading text-2xl font-medium">{form.id ? 'Edit item' : 'Add item'}</h2>
+              <button type="button" aria-label="Close" onClick={() => sheet.current.close()} className="-mt-1 -mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-md hover:bg-soft">
                 <PiX aria-hidden="true" className="size-5" />
               </button>
             </div>
@@ -173,7 +173,7 @@ export function Menu() {
               {form.recipe.map((l, n) => {
                 const ing = ingredients.find((i) => i.id === l.ingredientId)
                 return (
-                  <div key={n} className="grid grid-cols-[minmax(0,1fr)_6rem_auto] items-end gap-x-2 gap-y-1 rounded-xl border border-line p-3">
+                  <div key={n} className="grid grid-cols-[minmax(0,1fr)_6rem_auto] items-end gap-x-2 gap-y-1 rounded-md border border-line p-3">
                     <label className="flex min-w-0 flex-col gap-1 text-xs font-semibold">
                       Ingredient {n + 1}
                       <select value={l.ingredientId} onChange={(e) => setLine(n, { ingredientId: e.target.value })} className={`${field} w-full`}>
@@ -184,7 +184,7 @@ export function Menu() {
                       Amount {n + 1} ({ing.unit})
                       <input type="number" inputMode="numeric" min="1" step="1" value={l.qty} onChange={(e) => setLine(n, { qty: e.target.value })} className={`${field} w-full`} />
                     </label>
-                    <button type="button" onClick={() => set('recipe', form.recipe.filter((_, i) => i !== n))} className="inline-flex size-11 items-center justify-center rounded-full text-danger hover:bg-soft">
+                    <button type="button" onClick={() => set('recipe', form.recipe.filter((_, i) => i !== n))} className="inline-flex size-11 items-center justify-center rounded-md text-danger hover:bg-soft">
                       <PiTrash aria-hidden="true" className="size-5" />
                       <span className="sr-only">Remove {ing.name}</span>
                     </button>
@@ -210,7 +210,7 @@ export function Menu() {
             </fieldset>
 
             {error && (
-              <p key={submits} id="menu-form-error" role="alert" className="rounded-xl bg-warn-bg px-3 py-2 text-sm font-semibold text-warn-ink">
+              <p key={submits} id="menu-form-error" role="alert" className="rounded-md bg-warn-bg px-3 py-2 text-sm font-semibold text-warn-ink">
                 {error}
               </p>
             )}
