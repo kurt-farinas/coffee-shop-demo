@@ -150,7 +150,7 @@ export function Inventory() {
               />
             </label>
             {error && <p id="restock-error" role="alert" className="-mt-2 text-sm font-semibold text-danger">{error}</p>}
-            <button type="submit" className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95">
+            <button type="submit" className="btn-primary min-h-12 px-6 text-base">
               Save
             </button>
           </form>

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { shopConfig } from './shop.config.js'
+import { contrastRatio } from '../lib/contrast.js'
 
 const ingredientIds = shopConfig.ingredients.map((i) => i.id)
 
@@ -15,5 +16,17 @@ describe('shopConfig', () => {
         expect(ingredientIds, `${item.id} uses ${line.ingredientId}`).toContain(line.ingredientId)
       }
     }
+  })
+})
+
+describe('shopConfig.theme', () => {
+  const t = shopConfig.theme
+  const pairs = [
+    ...['text', 'muted', 'accentInk', 'warnText', 'success', 'danger'].flatMap((fg) => ['page', 'surface', 'soft'].map((bg) => [fg, bg])),
+    ['onAccent', 'accent'], ['text', 'highlight'], ['railInk', 'rail'], ['warnText', 'warnBg'], ['success', 'successBg'],
+  ]
+  it.each(pairs)('keeps %s readable on %s (4.5:1)', (fg, bg) => {
+    expect(t[fg], fg).toBeDefined()
+    expect(contrastRatio(t[fg], t[bg])).toBeGreaterThanOrEqual(4.5)
   })
 })

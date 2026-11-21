@@ -180,7 +180,7 @@ export function Pos() {
             type="button"
             disabled={cart.length === 0}
             onClick={pay}
-            className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary min-h-12 px-6 text-base"
           >
             Pay {formatPeso(total)}
           </button>
@@ -215,7 +215,7 @@ export function Pos() {
             {uses.sugar && (
               <Choice legend="Sugar" value={picked.options.sugar} onChange={(v) => setOption('sugar', v)} options={SUGAR_LEVELS.map((s) => ({ value: s, label: `${s}%` }))} />
             )}
-            <button type="button" data-add disabled={outWith({})} onClick={addPicked} className="min-h-12 rounded-full bg-accent px-6 text-base font-semibold text-ink transition hover:brightness-95">
+            <button type="button" data-add disabled={outWith({})} onClick={addPicked} className="btn-primary min-h-12 px-6 text-base">
               Add to order · {formatPeso(linePrice(picked.item, picked.options))}
             </button>
           </div>

@@ -13,6 +13,8 @@
   --color-muted: var(--brand-muted);
   --color-accent: var(--brand-accent);
   --color-accent-ink: var(--brand-accent-ink);
+  --color-on-accent: var(--brand-on-accent);
+  --color-rule: var(--brand-rule);
   --color-highlight: var(--brand-highlight);
   --color-warn-bg: var(--brand-warn-bg);
   --color-warn-ink: var(--brand-warn-text);
@@ -51,4 +53,27 @@ body {
   header.bg-rail :focus-visible {
     outline-color: var(--color-rail);
   }
+}
+
+/* shared editorial pieces: pages use these instead of repeating long utility strings */
+@utility card {
+  @apply rounded-md border border-line bg-surface p-4 md:p-5;
+}
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-sm font-semibold transition-[background-color,filter,transform] duration-150 active:translate-y-px;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-on-accent hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100;
+}
+@utility btn-ghost {
+  @apply btn border border-rule text-ink hover:bg-soft;
+}
+@utility label {
+  @apply text-xs font-semibold tracking-[0.14em] text-muted uppercase;
+}
+@utility rule {
+  @apply border-t-2 border-rule;
+}
+@utility display-num {
+  @apply font-heading font-medium tracking-tight tabular-nums;
 }

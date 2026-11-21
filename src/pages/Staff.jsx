@@ -35,7 +35,7 @@ function PersonCard({ person, now }) {
   return (
     <li data-testid="staff-card" className="rounded-2xl border border-line bg-surface p-4">
       <div className="flex items-start gap-3">
-        <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-lg font-semibold text-ink">
+        <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-rail font-heading text-lg font-medium text-rail-ink">
           {initials(person.name)}
         </span>
         <div className="min-w-0 flex-1">

@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import { PiArrowRight, PiCoffee, PiCoffeeBean, PiCrown } from 'react-icons/pi'
+import { PiArrowRight } from 'react-icons/pi'
 import { useRole } from '../auth/RoleProvider.jsx'
 import { ROLES, homeFor } from '../auth/roles.js'
 import { shopConfig } from '../config/shop.config.js'
+import { Photo } from '../components/Photo.jsx'
 
 const CHOICES = [
-  { role: 'owner', icon: PiCrown, line: 'Full access' },
-  { role: 'barista', icon: PiCoffee, line: 'Takes orders, makes drinks, checks stock. No costs or profit.' },
+  { role: 'owner', line: 'Full access: sales, costs, profit, menu and staff.' },
+  { role: 'barista', line: 'Takes orders, makes drinks, checks stock. No costs or profit.' },
 ]
 
 export function Login() {
@@ -17,45 +18,45 @@ export function Login() {
     navigate(homeFor(role))
   }
   return (
-    <main className="min-h-dvh bg-page">
-      <header className="bg-rail px-5 pt-10 pb-28 text-center text-rail-ink md:pt-16 md:pb-36">
-        <PiCoffeeBean aria-hidden="true" className="mx-auto size-10 text-highlight" />
-        <h1 className="mt-4 font-heading text-4xl font-semibold tracking-tight md:text-6xl">{shopConfig.name}</h1>
-        <div aria-hidden="true" className="mx-auto mt-5 flex w-40 items-center gap-2 text-highlight">
-          <span className="h-px flex-1 bg-highlight" />
-          <PiCoffeeBean className="size-3" />
-          <span className="h-px flex-1 bg-highlight" />
-        </div>
-        <p className="mx-auto mt-5 max-w-md text-base md:text-lg">{shopConfig.tagline}</p>
-      </header>
+    <main className="grid min-h-dvh bg-page md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div className="relative h-[38vh] overflow-hidden bg-rail md:order-2 md:h-auto">
+        <Photo src={shopConfig.heroImage} label={shopConfig.name} className="size-full text-8xl" />
+      </div>
 
-      <section aria-labelledby="pick-role" className="mx-auto -mt-20 max-w-3xl px-5 pb-12 md:-mt-24">
-        <h2 id="pick-role" className="text-center text-sm font-semibold tracking-[0.2em] text-rail-ink uppercase">
-          Who is on shift?
-        </h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {CHOICES.map(({ role, icon: Icon, line }) => (
-            <button
-              key={role}
-              type="button"
-              onClick={() => enter(role)}
-              className="group flex flex-col rounded-2xl border border-line bg-surface p-6 text-left text-ink shadow-[0_12px_30px_-18px_rgb(43_25_15/0.6)] transition hover:-translate-y-0.5 hover:border-accent focus-visible:border-accent"
-            >
-              <span aria-hidden="true" className="grid size-12 place-items-center rounded-full bg-soft text-accent-ink">
-                <Icon className="size-6" />
-              </span>
-              <span className="mt-4 font-heading text-2xl font-semibold">{ROLES[role].label}</span>
-              <span className="text-sm text-muted">{ROLES[role].person}</span>
-              <span className="mt-3 text-[15px]">{line}</span>
-              <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-ink">
-                Log in as {ROLES[role].label}
-                <PiArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </button>
-          ))}
-        </div>
-        <p className="mt-8 text-center text-[13px] text-muted">A demo with sample data. No password needed, and it resets when you reload.</p>
-      </section>
+      <div className="flex flex-col px-5 py-10 md:px-14 md:py-14 lg:px-20">
+        <h1 className="font-heading text-5xl leading-[0.95] font-medium tracking-tight text-balance md:text-7xl">{shopConfig.name}</h1>
+        <p className="mt-5 mb-10 max-w-md text-lg text-muted">{shopConfig.tagline}</p>
+
+        <section aria-labelledby="pick-role" className="rule pt-6 md:mt-auto">
+          <h2 id="pick-role" className="font-heading text-2xl font-medium">
+            Who is on shift?
+          </h2>
+          <ul className="mt-4 divide-y divide-line border-b border-line">
+            {CHOICES.map(({ role, line }) => (
+              <li key={role}>
+                <button
+                  type="button"
+                  onClick={() => enter(role)}
+                  className="group flex w-full items-center gap-4 py-5 text-left transition-colors hover:bg-soft/60 md:-mx-3 md:w-[calc(100%+1.5rem)] md:px-3"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-baseline gap-x-3">
+                      <span className="font-heading text-3xl font-medium">{ROLES[role].label}</span>
+                      <span className="text-sm text-muted">{ROLES[role].person}</span>
+                    </span>
+                    <span className="mt-1 block text-[15px] text-muted">{line}</span>
+                  </span>
+                  <span className={`${role === 'owner' ? 'btn-primary' : 'btn-ghost'} shrink-0`}>
+                    <span className="sr-only md:not-sr-only">Log in as {ROLES[role].label}</span>
+                    <PiArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-[13px] text-muted">A demo with sample data. No password needed, and it resets when you reload.</p>
+        </section>
+      </div>
     </main>
   )
 }

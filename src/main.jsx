@@ -31,10 +31,11 @@ icon.rel = 'icon'
 icon.type = 'image/svg+xml'
 icon.href = URL.createObjectURL(new Blob([favicon], { type: 'image/svg+xml' }))
 
-const family = (name) => `family=${name.replaceAll(' ', '+')}:wght@400;500;600;700`
+// heading also loads italic (Fraunces italic is used for accents)
+const family = (name, italic) => `family=${name.replaceAll(' ', '+')}:${italic ? 'ital,wght@0,400;0,500;0,600;0,700;1,400;1,500' : 'wght@400;500;600;700'}`
 const fonts = document.createElement('link')
 fonts.rel = 'stylesheet'
-fonts.href = `https://fonts.googleapis.com/css2?${[...new Set([shopConfig.fonts.body, shopConfig.fonts.heading])].map(family).join('&')}&display=swap`
+fonts.href = `https://fonts.googleapis.com/css2?${[family(shopConfig.fonts.heading, true), ...(shopConfig.fonts.body === shopConfig.fonts.heading ? [] : [family(shopConfig.fonts.body)])].join('&')}&display=swap`
 document.head.append(fonts)
 
 createRoot(document.getElementById('root')).render(

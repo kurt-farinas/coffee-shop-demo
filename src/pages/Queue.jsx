@@ -36,7 +36,7 @@ function OrderCard({ order, action, now, onAdvance }) {
       <button
         type="button"
         onClick={() => onAdvance(order)}
-        className="mt-4 min-h-11 w-full rounded-full bg-accent px-4 text-sm font-semibold text-ink transition hover:brightness-95"
+        className="btn-primary mt-4 w-full px-4"
       >
         {action}
       </button>
