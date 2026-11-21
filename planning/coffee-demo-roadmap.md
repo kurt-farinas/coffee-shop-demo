@@ -162,7 +162,7 @@ Home page per role: owner and cashier `/`, barista `/queue` (so the redirect for
 - [ ] Staff (owner): list with role and schedule.
 - **Acceptance:** selector tests on fixed seed values; Cashier dashboard has no profit.
 
-### Phase 5 — Look, re-skin guide, deploy (provisional)
+### Phase 5 — Look, re-skin guide, deploy — polish and README DONE; deploy waiting for OK
 - [ ] Design pass (own coffee look, not the spa's), mobile check at 375 px, favicon from theme, `index.html` meta.
 - [ ] README with the re-skin steps.
 - [ ] **Gate (needs user OK):** create GitHub repo, push, connect Vercel, add `DEPLOYMENTS.md` entry with `Card: #143`.

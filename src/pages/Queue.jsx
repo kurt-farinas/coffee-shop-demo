@@ -87,7 +87,7 @@ export function Queue() {
       <div className="mt-4 grid gap-6 md:mt-6 md:grid-cols-3">
         {COLUMNS.map((c) => (
           <section key={c.key} id={`col-${c.key}`} role="tabpanel" aria-labelledby={`tab-${c.key}`} className={tab === c.key ? '' : 'hidden md:block'}>
-            <h2 id={`head-${c.key}`} className="flex items-center gap-2 text-sm font-semibold tracking-[0.15em] text-muted uppercase">
+            <h2 id={`head-${c.key}`} className="flex items-center gap-2 max-md:sr-only text-sm font-semibold tracking-[0.15em] text-muted uppercase">
               {c.label}
               <span className="rounded-full bg-soft px-2 py-0.5 text-xs tracking-normal text-ink">{cols[c.key].length}</span>
             </h2>
