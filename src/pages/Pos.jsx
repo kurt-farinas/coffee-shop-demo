@@ -41,8 +41,9 @@ export function Pos() {
   const sheet = useRef(null)
   const paying = useRef(false)
 
-  const categories = ['All', ...new Set(state.menu.map((m) => m.category))]
-  const shown = state.menu.filter((m) => category === 'All' || m.category === category)
+  const onSale = state.menu.filter((m) => !m.hidden)
+  const categories = ['All', ...new Set(onSale.map((m) => m.category))]
+  const shown = onSale.filter((m) => category === 'All' || m.category === category)
   const itemOf = (id) => state.menu.find((m) => m.id === id)
   const total = cartTotal(state, cart)
   const count = cart.reduce((n, l) => n + l.qty, 0)

@@ -98,6 +98,25 @@ describe('Pos', () => {
     expect(button('Pay').disabled).toBe(true)
   })
 
+  it('does not list a hidden item', () => {
+    mount()
+    expect(button('Croissant')).toBeDefined()
+    act(() => store.toggleHidden('item-croissant'))
+    expect(button('Croissant')).toBeUndefined()
+    expect(button('Ensaymada')).toBeDefined()
+  })
+
+  it('a new latte price applies to new orders, not to past ones', () => {
+    mount()
+    const past = store.state.orders.find((o) => o.lines.some((l) => l.itemId === 'item-latte'))
+    const latte = store.state.menu.find((m) => m.id === 'item-latte')
+    act(() => store.saveItem({ ...latte, price: 165 }))
+    ringUpLatte()
+    tap('Pay')
+    expect(store.state.orders.at(-1).total).toBe(165)
+    expect(store.state.orders.find((o) => o.id === past.id)).toEqual(past)
+  })
+
   it('shows a store error as a toast', () => {
     mount()
     tap('Croissant')

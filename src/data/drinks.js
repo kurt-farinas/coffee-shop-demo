@@ -2,7 +2,8 @@ export const SIZES = { S: { add: -20, factor: 0.8 }, M: { add: 0, factor: 1 }, L
 export const MILKS = { whole: { add: 0, ingredientId: 'ing-whole-milk' }, oat: { add: 30, ingredientId: 'ing-oat-milk' } }
 export const SHOT = { add: 40, grams: 18 }
 export const SUGAR_LEVELS = [0, 25, 50, 100]
-export const DEFAULT_OPTIONS = { size: 'M', milk: 'whole', extraShot: false, sugar: 100 }
+export const CATEGORIES = ['Espresso', 'Non-coffee', 'Pastry']
+export const DEFAULT_OPTIONS ={ size: 'M', milk: 'whole', extraShot: false, sugar: 100 }
 
 // which choices this item takes: pastries have no size or sugar, no milk line means no milk, no shot unless allowed
 export function choicesFor(item) {
