@@ -1,5 +1,7 @@
 # Coffee shop demo
 
+Live: https://coffee-shop-demo-rho.vercel.app (Vercel deploys every push to `main`).
+
 A clickable demo of a coffee shop system: dashboard, point of sale, barista order queue, ingredient inventory, menu with recipes, staff and sales report. All data is made up and lives in the browser, with no backend; a reload resets it.
 
 ## Roles
